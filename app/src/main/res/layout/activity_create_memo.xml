@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".create_memo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/blue"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/backimage" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:hint="제목없음"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="#C4C4C5"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/succes"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center_vertical|center"
+            android:text="완료"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+
+            app:backgroundTint="@color/yellow" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="70dp"
+        android:background="@color/white"
+        android:gravity="top|left"
+        android:hint="내용을 적어주세요"
+        android:textColor="@color/black"
+        android:textColorHint="@color/darkgray"
+
+        app:layout_constraintTop_toTopOf="@+id/frameLayout2"
+        tools:ignore="UnknownIdInLayout" />
+</RelativeLayout>

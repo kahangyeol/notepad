@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/star"
+        android:icon="@drawable/star"
+        android:title="즐겨찾기" />
+
+    <item android:id="@+id/delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="휴지통" />
+
+    <item android:id="@+id/pin"
+        android:icon="@drawable/pin"
+        android:title="상단에 고정" />
+
+    <item android:id="@+id/update"
+
+        android:title="이름변경" />
+
+</menu>

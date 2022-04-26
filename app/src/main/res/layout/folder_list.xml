@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       tools:ignore="Orientation">
+
+       <ImageButton
+           android:id="@+id/imageButton6"
+           android:layout_width="65sp"
+           android:layout_height="match_parent"
+           android:backgroundTint="@color/white"
+           app:srcCompat="@android:drawable/btn_star_big_off" />
+
+       <Button
+           android:id="@+id/Button1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/btn_bg"
+           android:gravity="center_vertical|left"
+           android:paddingLeft="40dp"
+           android:text="모든 폴더"
+           android:textColor="@color/black"
+           android:textSize="30sp"
+
+           app:backgroundTint="@color/white"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="0.0"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:id ="@+id/folder">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="65dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+
+        <Button
+            android:id="@+id/Button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:text="즐겨찾기"
+            android:paddingLeft="40dp"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:backgroundTint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/trash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:gravity="center|left"
+            android:paddingLeft="40dp"
+            android:text="휴지통"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:backgroundTint="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

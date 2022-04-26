@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/trash_dialog"
+    android:orientation="vertical">
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_gravity="center"
+        android:text="폴더 삭제"
+        android:paddingTop="20dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:includeFontPadding="false"/>
+-->
+    <TextView
+        android:id="@+id/trash_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="30dp"
+        android:text="폴더 삭제\n하위 파일까지 모두 영구 삭제되며\n되돌릴 수 없습니다.\n정말 삭제하시겠습니까?"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:bufferType="spannable"
+        android:includeFontPadding="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/noBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textColor="@color/blue"/>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray"/>
+
+        <Button
+            android:id="@+id/yesBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:textColor="@color/red"/>
+    </LinearLayout>
+
+</LinearLayout>

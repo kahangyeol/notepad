@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/trash_dialog"
+    android:orientation="vertical">
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_gravity="center"
+        android:text="폴더 삭제"
+        android:paddingTop="20dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:includeFontPadding="false"/>
+-->
+    <TextView
+        android:id="@+id/newFolder_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="20dp"
+        android:lineSpacingMultiplier="1.2"
+        android:text="폴더 새로만들기\n폴더의 이름을 입력해 주세요"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:bufferType="spannable"
+        android:includeFontPadding="true"/>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:id="@+id/et_folderName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="2dp"
+            android:selectAllOnFocus="true"
+            android:padding="10dp"
+            android:textSize="13sp"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/noBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textColor="@color/blue"/>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray"/>
+
+        <Button
+            android:id="@+id/yesBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="확인"
+            android:textColor="@drawable/txt_color"/>
+    </LinearLayout>
+
+</LinearLayout>
