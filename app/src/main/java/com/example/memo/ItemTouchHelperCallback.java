@@ -1,8 +1,6 @@
 package com.example.memo;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,17 +11,18 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memo.recycle.RecyclerAdapter;
 
+/*
 enum ButtonsState{
     GONE,
     LEFT_VISIBLE,
     RIGHT_VISIBLE
 }
+*/
 
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
@@ -32,11 +31,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     static int swipeFlag = 0;
     private ItemTouchHelperListener listener;
     private Context mContext;
-    private boolean swipeBack = false;
+/*    private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 300;
     private RectF buttonInstance = null;
-    private RecyclerView.ViewHolder currenrtItemViewHolder = null;
+    private RecyclerView.ViewHolder currenrtItemViewHolder = null;*/
 
     public ItemTouchHelperCallback(RecyclerAdapter adapter,Context mContext){
         this.adapter = adapter;
@@ -94,30 +93,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-        // Show delete confirmation if swipped left
-        if (swipeDir == ItemTouchHelper.LEFT) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage("Are you sure you want to delete?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-//                            deleteItem(viewHolder);
-//                                    getActivity().finish();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        } else if (swipeDir == ItemTouchHelper.RIGHT) {
-            // Show edit dialog
-        }
+        listener.onItemSwipe(viewHolder.getAdapterPosition());
     }
 
     @Override
@@ -130,6 +106,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
             float width = height / 3;
             Paint p = new Paint();
+            //왼쪽 스와이프
             if (dX > 0) {
                 p.setColor(Color.parseColor("#3B82F7"));
                 RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom() - 5);
@@ -137,6 +114,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.pin_white);
                 RectF icon_dest = new RectF((float) itemView.getLeft() + width + width/3, (float) itemView.getTop() + width - width/5, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width + width/5);
                 c.drawBitmap(icon, null, icon_dest, p);
+            //오른쪽 스와이프
             } else if (dX < 0) {
                 p.setColor(Color.parseColor("#D32F2F"));
                 RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom() - 5);
@@ -197,6 +175,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         }
     }*/
 
+/*
     private void drawButtons(Canvas c, RecyclerView.ViewHolder viewHolder) {
         float buttonWidthWithOutPadding = buttonWidth - 10;
         float corners = -5;
@@ -231,6 +210,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             buttonInstance = rightButton;
         }
     }
+*/
 
     /*@Override
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {

@@ -132,9 +132,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mContext = this;
         db = AppDatabase.getInstance(this);
 
-        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter,this);
+        /*ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter,this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(recyclerView);
+        helper.attachToRecyclerView(recyclerView);*/
        /* RecyclerDecoration spaceDecoration = new RecyclerDecoration(-30);
         //리싸이클러뷰 간격조절
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.
@@ -341,10 +341,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 //        setId();
-        /*ItemTouchHelperCallback callback = new ItemTouchHelperCallback((ItemTouchHelperCallback.OnItemMoveListener) adapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);*/
-
+        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter,this);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
 
         btn_edit = (ImageButton) findViewById(R.id.edit);
         btn_edit.setOnClickListener(new View.OnClickListener() {
@@ -355,9 +354,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (editCheck) {
                     adapter.setItemViewType(RecyclerAdapter.VIEWTYPE_EDIT);
                     recyclerView.startAnimation(ani);
-                    checkBox.setVisibility(View.VISIBLE);
                     binding.fabMain.setVisibility(View.VISIBLE);
                     binding.edit.setImageResource(R.drawable.editing);
+                    checkBox.setVisibility(View.VISIBLE);
+                    binding.selectFolder.setText("선택된 폴더: 0");
 
                     trash.setImageResource(R.drawable.trash_edit);
                     trash.setOnClickListener(new View.OnClickListener() {
@@ -367,20 +367,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             dialog.setContentView(R.layout.trash_dialog);
                             showDialogTrash(dialog);
-                            /*dialog.setTitle("폴더삭제");
-                            dialog.setMessage("하위 파일까지 모두 영구 삭제되며\n되돌릴 수 없습니다.\n정말 삭제하시겠습니까?");
-                            dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ((RecyclerAdapter)recyclerView.getAdapter()).selectDel();
-                                }
-                            });
-                            dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                            dialog.show();*/
                         }
                     });
                     editCheck = false;
@@ -395,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     binding.fabPin.setVisibility(View.INVISIBLE);
                     binding.fabStar.setVisibility(View.INVISIBLE);
                     checkBox.setVisibility(View.GONE);
+                    binding.selectFolder.setText("선택된 폴더: 0");
 
                     trash.setImageResource(R.drawable.trash);
                     trash.setOnClickListener(new View.OnClickListener() {
