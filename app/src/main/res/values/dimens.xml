@@ -5,4 +5,5 @@
     <dimen name="design_fab_size_normal" tools:overrride="true">45dp</dimen>
     <dimen name="design_fab_image_size" tools:overrride="true">45dp</dimen>
     <dimen name="design_fab_size_mini" tools:overrride="true">35dp</dimen>
+    <dimen name="ic_remove_margin">16dp</dimen>
 </resources>
