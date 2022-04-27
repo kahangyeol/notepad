@@ -341,9 +341,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 //        setId();
-//        ItemTouchHelperCallback callback = new ItemTouchHelperCallback((ItemTouchHelperCallback.OnItemMoveListener) adapter);
-//        itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        /*ItemTouchHelperCallback callback = new ItemTouchHelperCallback((ItemTouchHelperCallback.OnItemMoveListener) adapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);*/
 
 
         btn_edit = (ImageButton) findViewById(R.id.edit);
