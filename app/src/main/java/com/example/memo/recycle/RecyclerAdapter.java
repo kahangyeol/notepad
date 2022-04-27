@@ -628,6 +628,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         notifyDataSetChanged();
     }
 
+    public void selectCount(){
+        TextView folderCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.selectFolder);
+        folderCount.setText("폴더: " + selectCheckBox.size());
+    }
 
     public void del(User user, int position) {
         userData.remove(user); //----------- 삭제용
