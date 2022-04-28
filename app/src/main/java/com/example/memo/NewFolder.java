@@ -125,7 +125,7 @@ public class NewFolder extends AppCompatActivity {
 
     public void initialized(String folderTitle) {
         recyclerView = (RecyclerView) ((Activity) mContext).findViewById(R.id.memoRecyclerView);
-        adapter = new MemoRecyclerAdapter();
+        adapter = new MemoRecyclerAdapter(this, recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
         users = AppDatabase.getInstance(this).userDao().getAllMemoRoot(folderTitle);
 

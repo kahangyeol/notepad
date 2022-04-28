@@ -38,7 +38,6 @@ public class create_memo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_memo);
-        adapter = new MemoRecyclerAdapter();
         db = AppDatabase.getInstance(this);
         users = db.userDao().getAll();
 

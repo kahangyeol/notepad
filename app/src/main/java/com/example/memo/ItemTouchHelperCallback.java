@@ -1,51 +1,41 @@
 package com.example.memo;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.memo.Room.User;
 import com.example.memo.recycle.RecyclerAdapter;
 
-/*
-enum ButtonsState{
-    GONE,
-    LEFT_VISIBLE,
-    RIGHT_VISIBLE
-}
-*/
-
+import java.util.List;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    private RecyclerAdapter adapter;
+//    private RecyclerAdapter adapter;
     static int dragFlag = 0;
     static int swipeFlag = 0;
     private ItemTouchHelperListener listener;
     private Context mContext;
+//    private ButtonsState buttonsState = ButtonsState.GONE;
+//    public List<User> users;
+
 /*    private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 300;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currenrtItemViewHolder = null;*/
 
-    public ItemTouchHelperCallback(RecyclerAdapter adapter,Context mContext){
-        this.adapter = adapter;
+    public ItemTouchHelperCallback(List<User> users, ItemTouchHelperListener listener, Context mContext){
+        this.listener = listener;
         this.mContext = mContext;
+//        this.users = users;
     }
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         //삼선 클릭시에만 이동
-        viewHolder.itemView.findViewById(R.id.lineUp).setOnTouchListener(new View.OnTouchListener(){
+        /*viewHolder.itemView.findViewById(R.id.lineUp).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
@@ -54,7 +44,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 }else dragFlag = 0;
                 return false;
             }
-        });
+        });*/
 /*
         viewHolder.itemView.findViewById(R.id.lineUp).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -64,11 +54,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             }
         });
 */
-       /* if (((RecyclerAdapter) recyclerView.getAdapter()).mItemViewType == 1)
+        /*if (((RecyclerAdapter) recyclerView.getAdapter()).mItemViewType == 1)
             dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         else
             dragFlag = 0;*/
-
+        dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         if (((RecyclerAdapter) recyclerView.getAdapter()).mItemViewType == 0)
             swipeFlag = ItemTouchHelper.START | ItemTouchHelper.END;
         else
@@ -82,20 +72,28 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return true;
     }
 
-
-
     @Override
+    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        listener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        return true;
+    }
+
+
+
+    /*@Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 //        onItemMoveListener.onItemMove(viewHolder.getAdapterPosition(),target.getAdapterPosition());
 //        return listener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-        return listener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-    }
+        adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        return adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+    }*/
 
     @Override
-    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         listener.onItemSwipe(viewHolder.getAdapterPosition());
     }
 
+/*
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
@@ -113,7 +111,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 c.drawRect(background, p);
                 icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.pin_white);
                 RectF icon_dest = new RectF((float) itemView.getLeft() + width + width/3, (float) itemView.getTop() + width - width/5, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width + width/5);
-                c.drawBitmap(icon, null, icon_dest, p);
+                c.drawBitmap(icon, null, icon_dest, p); //그리기
+                buttonsState = ButtonsState.LEFT_VISIBLE;
             //오른쪽 스와이프
             } else if (dX < 0) {
                 p.setColor(Color.parseColor("#D32F2F"));
@@ -121,11 +120,12 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 c.drawRect(background, p);
                 icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.trash_white);
                 RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width - width/3, (float) itemView.getTop() + width - width/5, (float) itemView.getRight() - width - width/3, (float) itemView.getBottom() - width + width/5);
-                c.drawBitmap(icon, null, icon_dest, p);
+                c.drawBitmap(icon, null, icon_dest, p);//그리기
             }
         }
-        super.onChildDraw(c, recyclerView, viewHolder, dX / 6, dY, actionState, isCurrentlyActive);
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
+*/
 
    /* @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {

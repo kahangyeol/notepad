@@ -41,6 +41,9 @@ public class User implements Parcelable {
     @ColumnInfo(name = "pin")
     public int pin;
 
+    @ColumnInfo(name = "time")
+    public String time;
+
     public User (int id,String folderTitle, int trash,String memoTitle, String content,String root,int star, int password, int pin){
         this.id = id;
         this.folderTitle = folderTitle;

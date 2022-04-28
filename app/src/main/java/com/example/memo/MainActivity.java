@@ -43,7 +43,6 @@ import com.example.memo.Room.AppDatabase;
 import com.example.memo.Room.User;
 import com.example.memo.databinding.ActivityMainBinding;
 import com.example.memo.recycle.RecyclerAdapter;
-import com.example.memo.recycle.edit.EditRecyclerAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -72,9 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayoutManager linearLayoutManager;
     AppDatabase db;
     private RecyclerAdapter adapter;
-    private EditRecyclerAdapter mAdapter; //edit전용
     public static Context mContext;
-    ItemTouchHelper itemTouchHelper;
     private AdView mAdView;
     @Override
     public void onBackPressed() {
@@ -132,9 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mContext = this;
         db = AppDatabase.getInstance(this);
 
-        /*ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter,this);
+        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(users, adapter,this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(recyclerView);*/
+        helper.attachToRecyclerView(recyclerView);
        /* RecyclerDecoration spaceDecoration = new RecyclerDecoration(-30);
         //리싸이클러뷰 간격조절
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.
@@ -199,65 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-/*
-    private void initHelper() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-
-            @Override
-            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                return super.getSwipeDirs(recyclerView, viewHolder);
-            }
-
-            @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                View itemView = viewHolder.itemView;
-                Drawable mark, background;
-                int markMargin;
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-                    itemView = viewHolder.itemView;
-                    mark = ContextCompat.getDrawable(mContext,R.drawable.pin);
-                    mark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                    markMargin = (int) mContext.getResources().getDimension(R.dimen.ic_remove_margin);
-
-                    //왼쪽 스와이프   dX = x축으로 얼마나 이동(스와이프)했는지
-                    if(dX < 1){
-                        background = new ColorDrawable(Color.parseColor("#3B82F7"));
-                        background.setBounds(itemView.getRight()+(int) dX, itemView.getTop(),itemView.getRight(),itemView.getBottom());
-                        background.draw(c);
-
-                        int itemHeight = itemView.getBottom() - itemView.getTop(); // Item 높이
-                        int markWidth = mark.getIntrinsicWidth(); // Intrinsic: 본질적 - xMark 의 실제 길이
-                        int markHeight = mark.getIntrinsicHeight();
-
-                        int markLeft = itemView.getRight() - markMargin - markWidth;
-                        int markRight = itemView.getRight() - markMargin;
-                        int markTop = itemView.getTop() + (itemHeight - markHeight) / 2;
-                        int markBottom = markTop + markHeight;
-                        mark.setBounds(markLeft, markTop, markRight, markBottom);
-                        mark.draw(c);
-                    } else {
-                        background = new ColorDrawable(Color.parseColor("#FFFF1A1A"));
-                        background.setBounds(itemView.getLeft(), itemView.getTop(), itemView.getLeft()+(int)dX, itemView.getBottom());
-                        background.draw(c);
-                    }
-                }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        };
-
-        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-*/
 
 
     //========================================================함수========================================================
@@ -341,9 +279,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 //        setId();
-        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter,this);
+        /*ItemTouchHelperCallback callback = new ItemTouchHelperCallback(users, adapter,this);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(recyclerView);
+        helper.attachToRecyclerView(recyclerView);*/
 
         btn_edit = (ImageButton) findViewById(R.id.edit);
         btn_edit.setOnClickListener(new View.OnClickListener() {

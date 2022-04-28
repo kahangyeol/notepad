@@ -119,12 +119,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public boolean onItemMove(int formPosition, int toPosition) {
-        int formPin = userData.get(formPosition).pin;
+        /*int formPin = userData.get(formPosition).pin;
         int toPin = userData.get(toPosition).pin;
         if(formPin != toPin){
             return false;
-        }
-        User user = userData.get(formPosition);
+        }*/
+
+        Collections.swap(userData, formPosition, toPosition);
+        notifyItemMoved(formPosition, toPosition);
+        /*if (formPin == 0 && toPin == 0) {
+        }if (formPin == 1 && toPin == 1) {
+            Collections.swap(userData, formPosition, toPosition);
+            notifyItemMoved(formPosition, toPosition);
+        }*/
+        /*User user = userData.get(formPosition);
         if (formPin == 0 && toPin == 0) {
             userData.remove(formPosition);
             userData.add(toPosition,user);
@@ -135,16 +143,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             userData.add(toPosition,user);
             setId();
             moveSet();
-        }
+        }*/
 
-        notifyItemMoved(formPosition,toPosition);
-
-        /*int formPin = userData.get(formPosition).pin;
-        int toPin = userData.get(toPosition).pin;
-        if(formPin != toPin){
-            return false;
-        }
-        if (formPin == 0 && toPin == 0) {
+        /*if (formPin == 0 && toPin == 0) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
             setId();
@@ -155,6 +156,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             setId();
             moveSet();
         }*/
+        notifyItemMoved(formPosition,toPosition);
+
         return true;
     }
 
@@ -425,6 +428,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     allCheck.setChecked(false);
                     isSelectedAll = false;
                 }
+                selectCount();
             } else {
                 checkBox.setChecked(true);
                 selectCheckBox.add(position);
@@ -433,6 +437,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     allCheck.setChecked(true);
                     isSelectedAll = true;
                 }
+                selectCount();
             }
             setBackground(itemView, !(checkBox.isChecked()));
 
@@ -621,16 +626,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             isSelectedAll = false;
         } else {
             isSelectedAll = true;
+            selectCheckBox = new ArrayList<>();
             for (int i = 0; i < userData.size(); i++) {
                 selectCheckBox.add(i);
             }
         }
+        selectCount();
         notifyDataSetChanged();
     }
 
     public void selectCount(){
-        TextView folderCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.selectFolder);
-        folderCount.setText("폴더: " + selectCheckBox.size());
+        TextView selectCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.selectFolder);
+        selectCount.setText("선택된 폴더 " + selectCheckBox.size());
     }
 
     public void del(User user, int position) {
