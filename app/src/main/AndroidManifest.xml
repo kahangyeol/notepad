@@ -18,11 +18,8 @@
         <activity
             android:name=".Search"
             android:exported="true" />
-        <activity android:name=".SaveMemo">
-        </activity>
         <activity android:name=".Trash" />
         <activity android:name=".Create_memo" />
-        <activity android:name=".recycle.edit.FreeAlign" />
         <activity android:name=".NewFolder" />
         <activity android:name=".AllFile" />
         <activity android:name=".MainActivity"
