@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             trash.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), trash.class);
+                    Intent intent = new Intent(getApplicationContext(), Trash.class);
                     intent.putExtra("check", 0);
                     startActivity(intent);
                     finish();
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_allfile.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), allFile.class);
+                        Intent intent = new Intent(getApplicationContext(), AllFile.class);
                         Button folder = (Button) findViewById(R.id.Button1);
                         String folder_name = (folder.getText().toString());
                         intent.putExtra("folder_name", folder_name);
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), trash.class);
+                Intent intent = new Intent(getApplicationContext(), Trash.class);
                 intent.putExtra("check",0);
                 startActivity(intent);
                 finish();
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     trash.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), trash.class);
+                            Intent intent = new Intent(getApplicationContext(), Trash.class);
                             intent.putExtra("check",0);
                             startActivity(intent);
                             finish();
@@ -447,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Drawable img = getBaseContext().getResources().getDrawable(R.drawable.folder);
         img.setBounds(0, 0, 100, 100);
 
-        User user = new User(adapter.getItemCount(),value,0,null,null,null,0,0,0);
+        User user = new User(adapter.getItemCount(),value,0,null,null,null,0,0,0,null, null);
         db.userDao().insertAll(user);
         adapter.addItem(user);
         count ++;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".create_memo">
+    tools:context=".Create_memo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:weightSum="10">
 
         <ImageButton
-            android:id="@+id/imageButton10"
+            android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -62,12 +62,38 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="70dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/white"
         android:gravity="top|left"
         android:hint="내용을 적어주세요"
         android:textColor="@color/black"
         android:textColorHint="@color/darkgray"
 
-        app:layout_constraintTop_toTopOf="@+id/frameLayout2"
-        tools:ignore="UnknownIdInLayout" />
+        app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/createTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="time"
+            android:textColor="@color/darkgray"/>
+
+        <TextView
+            android:id="@+id/editTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="time"
+            android:textColor="@color/darkgray"/>
+    </LinearLayout>
 </RelativeLayout>

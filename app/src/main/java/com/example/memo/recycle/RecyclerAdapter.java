@@ -119,14 +119,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public boolean onItemMove(int formPosition, int toPosition) {
-        /*int formPin = userData.get(formPosition).pin;
+        int formPin = userData.get(formPosition).pin;
         int toPin = userData.get(toPosition).pin;
         if(formPin != toPin){
             return false;
-        }*/
+        }
 
-        Collections.swap(userData, formPosition, toPosition);
-        notifyItemMoved(formPosition, toPosition);
+        /*Collections.swap(userData, formPosition, toPosition);
+        notifyItemMoved(formPosition, toPosition);*/
         /*if (formPin == 0 && toPin == 0) {
         }if (formPin == 1 && toPin == 1) {
             Collections.swap(userData, formPosition, toPosition);
@@ -145,17 +145,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             moveSet();
         }*/
 
-        /*if (formPin == 0 && toPin == 0) {
+        if (formPin == 0 && toPin == 0) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
             setId();
             moveSet();
-        }else if (formPin == 1 && toPin == 1) {
+        } else if (formPin == 1 && toPin == 1) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
             setId();
             moveSet();
-        }*/
+        }
         notifyItemMoved(formPosition,toPosition);
 
         return true;
@@ -313,7 +313,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 String editFolderName = et.getText().toString();
                 if (!editFolderName.equals("")) {
                     int i = position;
-                    User folderName = new User(i, editFolderName, 0, "", "", null, userData.get(i).star, userData.get(i).password, userData.get(i).pin);
+                    User folderName = new User(i, editFolderName, 0, "", "", null, userData.get(i).star, userData.get(i).password, userData.get(i).pin,null,null);
                     //변경 이름 저장
                     AppDatabase.getInstance(mContext).userDao().updateFolderTitle(editFolderName, i);
                     AppDatabase.getInstance(mContext).userDao().updateRoot(editFolderName, userData.get(i).getFolderTitle());

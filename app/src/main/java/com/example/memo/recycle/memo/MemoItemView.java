@@ -41,7 +41,8 @@ public class MemoItemView extends LinearLayout{
     }
 
     void setContents(User user, boolean check) {
-        title.setText(user.getFolderTitle()); //title
+        title.setText(user.getMemoTitle()); //title
+        time.setText(user.getEditTime());
 
         checkbox.setChecked(check);
         int color;
@@ -55,7 +56,7 @@ public class MemoItemView extends LinearLayout{
         ivRight.setBackgroundColor(color);
         lineUp.setBackgroundColor(color);
 
-        int star = AppDatabase.getInstance(mContext).userDao().starFolder(user.id);
+        int star = AppDatabase.getInstance(mContext).userDao().loadStarMemo(user.id, user.root);
         if(star == 0){
             bookmark.setImageResource(R.drawable.file);
         } else if(star == 1){

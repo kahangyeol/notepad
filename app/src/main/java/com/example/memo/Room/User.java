@@ -41,10 +41,13 @@ public class User implements Parcelable {
     @ColumnInfo(name = "pin")
     public int pin;
 
-    @ColumnInfo(name = "time")
-    public String time;
+    @ColumnInfo(name = "createTime")
+    public String createTime;
 
-    public User (int id,String folderTitle, int trash,String memoTitle, String content,String root,int star, int password, int pin){
+    @ColumnInfo(name = "editTime")
+    public String editTime;
+
+    public User (int id,String folderTitle, int trash,String memoTitle, String content,String root,int star, int password, int pin, String createTime, String editTime){
         this.id = id;
         this.folderTitle = folderTitle;
         this.trash = trash;
@@ -54,6 +57,9 @@ public class User implements Parcelable {
         this.star = star;
         this.password = password;
         this.pin = pin;
+        this.createTime = createTime;
+        this.editTime = editTime;
+
     }
 
     /*protected User(Parcel in) {
@@ -114,6 +120,22 @@ public class User implements Parcelable {
 
     public String getMemoTitle() {
         return memoTitle;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(String editTime) {
+        this.editTime = editTime;
     }
 
     public void setMemoTitle(String memoTitle) {

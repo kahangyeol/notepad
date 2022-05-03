@@ -13,14 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.memo.Room.AppDatabase;
 import com.example.memo.Room.User;
+import com.example.memo.databinding.ActivityCreateMemoBinding;
 import com.example.memo.recycle.memo.MemoRecyclerAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class create_memo extends AppCompatActivity {
+public class Create_memo extends AppCompatActivity {
     TextView mFolder_name;
     String memoTitle, content;
     MemoRecyclerAdapter adapter;
+    ActivityCreateMemoBinding binding;
     List<User> users;
     int mbtn_id_t = 0;
     int count = 0;
@@ -33,27 +37,20 @@ public class create_memo extends AppCompatActivity {
     String value_save[] = new String[10000];
     SharedPreferences pref;
     AppDatabase db;
-
+    Intent getIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_memo);
-        db = AppDatabase.getInstance(this);
-        users = db.userDao().getAll();
+        binding = ActivityCreateMemoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        init();
 
         titleView = (EditText) findViewById(R.id.title);
         contentView = (EditText) findViewById(R.id.content);
 
-        Intent intent = getIntent();
-        backHistory = intent.getExtras().getInt("backHistory", 0);
-        /*if (folder_name.length() >= 5) {
-            folder_name = folder_name.substring(0, 4);
-            folder_name = folder_name + "...";
-        }*/
-        check = intent.getExtras().getBoolean("check");//true = 이미만들어진 메모 불러오기 flase = 메모 새로만들기
-
-        ImageButton imageButton10 = (ImageButton) findViewById(R.id.imageButton10);
-        imageButton10.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -77,35 +74,31 @@ public class create_memo extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     success();
-                    /*if(root.equals("")){ // root ""면 모든파일로
-                        Intent intent = new Intent(getApplicationContext(), allFile.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    Intent intent = new Intent(getApplicationContext(), NewFolder.class);
-                    intent.putExtra("folderTitle", user.getRoot());
-                    startActivity(intent);
-                    finish();*/
                 }
             });
-        } else if (!check) {//새로만들기 클릭 했을때
-            count = intent.getExtras().getInt("memoId");
-            root = intent.getExtras().getString("folderTitle");//폴더이름 가져오기
-            Button succes = (Button) findViewById(R.id.succes);
-            succes.setOnClickListener(new View.OnClickListener() {
+        } else {//새로만들기 클릭 했을때
+            count = getIntent.getExtras().getInt("memoId");
+            root = getIntent.getExtras().getString("folderTitle");//폴더이름 가져오기
+            Button success = (Button) findViewById(R.id.succes);
+            success.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     success();
                     //                    makeNewFile();
 
-                    /*Intent intent = new Intent(getApplicationContext(), NewFolder.class);
-                    intent.putExtra("folderTitle", root);
-                    startActivity(intent);
-                    finish();*/
                 }
             });
 
         }
+    }
+
+    private void init(){
+        db = AppDatabase.getInstance(this);
+        users = db.userDao().getAll();
+
+        getIntent = getIntent();
+        backHistory = getIntent.getExtras().getInt("backHistory", 0);
+        check = getIntent.getExtras().getBoolean("check");//true = 이미만들어진 메모 불러오기 flase = 메모 새로만들기
     }
 
     @Override
@@ -118,11 +111,11 @@ public class create_memo extends AppCompatActivity {
         if (check) {
             User user = getIntent().getParcelableExtra("data");
             fileModify(user);
-        } else if (!check) {
+        } else {
             makeNewFile();
         }
         if (root.equals("")) { // 모든파일로
-            Intent intent = new Intent(getApplicationContext(), allFile.class);
+            Intent intent = new Intent(getApplicationContext(), AllFile.class);
             startActivity(intent);
         } else if (backHistory == 0) { // 메모의 폴더로
             Intent intent = new Intent(getApplicationContext(), NewFolder.class);
@@ -130,7 +123,7 @@ public class create_memo extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else if (backHistory == 1) { // 휴지통으로
-            Intent intent = new Intent(getApplicationContext(), trash.class);
+            Intent intent = new Intent(getApplicationContext(), Trash.class);
             intent.putExtra("folderTitle", root);
             startActivity(intent);
         }
@@ -142,8 +135,17 @@ public class create_memo extends AppCompatActivity {
             memoTitle = "제목없음";
         }
         content = contentView.getText().toString();
-        User user = new User(count, null, 0, memoTitle, content, root, 0, 0, 0);
+
+        String createTime = getTime();
+        User user = new User(count, null, 0, memoTitle, content, root, 0, 0, 0,createTime,createTime);
         db.userDao().insertAll(user);
+    }
+
+    public String getTime(){
+        long nowTime = System.currentTimeMillis();
+        Date date = new Date(nowTime);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        return dateFormat.format(date);
     }
 
     public void fileModify(User user){

@@ -23,7 +23,7 @@ import com.example.memo.recycle.trash.TrashRecyclerViewAdapter;
 
 import java.util.List;
 
-public class trash extends AppCompatActivity {
+public class Trash extends AppCompatActivity {
     public static Context mContext;
     int btn_id_f = 0;
     Button nButton[];
@@ -75,7 +75,7 @@ public class trash extends AppCompatActivity {
                 if(adapter.getItemCount() > 0) {
                     adapter.allRollback();
                 }else{
-                    Toast.makeText(trash.this, "복원할 폴더 또는 메모가 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Trash.this, "복원할 폴더 또는 메모가 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -241,7 +241,7 @@ public class trash extends AppCompatActivity {
         }else{
             Intent intent;
             if(backFolderTitle.equals(""))
-                intent = new Intent(getApplicationContext(),allFile.class);
+                intent = new Intent(getApplicationContext(), AllFile.class);
             else
                 intent = new Intent(getApplicationContext(), NewFolder.class);
             intent.putExtra("folderTitle",backFolderTitle);

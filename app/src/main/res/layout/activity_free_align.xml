@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".recycle.edit.freeAlign"
+    tools:context=".recycle.edit.FreeAlign"
     >
     <LinearLayout
         android:layout_width="match_parent"

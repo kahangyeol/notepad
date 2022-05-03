@@ -2,7 +2,7 @@ package com.example.memo.recycle.edit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class  freeAlign extends AppCompatActivity {
+public class FreeAlign extends AppCompatActivity {
 
 } /*{
     private ItemTouchHelper helper;

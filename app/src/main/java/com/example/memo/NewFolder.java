@@ -94,7 +94,7 @@ public class NewFolder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count();
-                Intent intent = new Intent(getApplicationContext(), create_memo.class);
+                Intent intent = new Intent(getApplicationContext(), Create_memo.class);
                 intent.putExtra("folderTitle", folderTitle);//폴더이름 전송
                 intent.putExtra("memoId", adapter.getItemCount());
                 intent.putExtra("check", false);
@@ -109,7 +109,7 @@ public class NewFolder extends AppCompatActivity {
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), trash.class);
+                Intent intent = new Intent(getApplicationContext(), Trash.class);
                 intent.putExtra("check",1);
                 intent.putExtra("folderTitle", folderTitle);
                 startActivity(intent);
@@ -160,7 +160,7 @@ public class NewFolder extends AppCompatActivity {
                 int passWord = AppDatabase.getInstance(mContext).userDao().loadPassWord(id, folderTitle);
 
                 if(check == 0){
-                    Intent intent = new Intent(getApplicationContext(), create_memo.class);
+                    Intent intent = new Intent(getApplicationContext(), Create_memo.class);
 //                intent.putExtra("root",user.getRoot());
 //                intent.putExtra("memoId",user.getId());
                     intent.putExtra("check", true);

@@ -1,6 +1,14 @@
 package com.example.memo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -35,7 +43,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         //삼선 클릭시에만 이동
-        /*viewHolder.itemView.findViewById(R.id.lineUp).setOnTouchListener(new View.OnTouchListener(){
+        viewHolder.itemView.findViewById(R.id.lineUp).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
@@ -44,7 +52,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 }else dragFlag = 0;
                 return false;
             }
-        });*/
+        });
 /*
         viewHolder.itemView.findViewById(R.id.lineUp).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -58,7 +66,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         else
             dragFlag = 0;*/
-        dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+//        dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         if (((RecyclerAdapter) recyclerView.getAdapter()).mItemViewType == 0)
             swipeFlag = ItemTouchHelper.START | ItemTouchHelper.END;
         else
@@ -90,13 +98,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        listener.onItemSwipe(viewHolder.getAdapterPosition());
+//        listener.onItemSwipe(viewHolder.getAdapterPosition());
     }
 
-/*
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
         Bitmap icon;
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
 
@@ -112,7 +118,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.pin_white);
                 RectF icon_dest = new RectF((float) itemView.getLeft() + width + width/3, (float) itemView.getTop() + width - width/5, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width + width/5);
                 c.drawBitmap(icon, null, icon_dest, p); //그리기
-                buttonsState = ButtonsState.LEFT_VISIBLE;
             //오른쪽 스와이프
             } else if (dX < 0) {
                 p.setColor(Color.parseColor("#D32F2F"));
@@ -123,9 +128,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 c.drawBitmap(icon, null, icon_dest, p);//그리기
             }
         }
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        super.onChildDraw(c, recyclerView, viewHolder, dX/6, dY, actionState, isCurrentlyActive);
     }
-*/
 
    /* @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -233,7 +237,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                         buttonsShowedState = ButtonsState.LEFT_VISIBLE;
                     
                     if(buttonsShowedState != ButtonsState.GONE) {
-                        seTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         setItemsClickable(recyclerView, false);
                     }
                 }
@@ -242,7 +246,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         });
     }
 
-    private void seTouchDownListener(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+    private void setTouchDownListener(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

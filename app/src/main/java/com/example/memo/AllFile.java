@@ -23,7 +23,7 @@ import com.example.memo.recycle.memo.MemoRecyclerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class allFile extends AppCompatActivity {
+public class AllFile extends AppCompatActivity {
     public static Context mContext;
     List<User> users;
     RecyclerView recyclerView;
@@ -80,7 +80,7 @@ public class allFile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count();
-                Intent intent = new Intent(getApplicationContext(), create_memo.class);
+                Intent intent = new Intent(getApplicationContext(), Create_memo.class);
                 intent.putExtra("folderTitle", "");//폴더이름 전송
                 intent.putExtra("memoId", count);
                 intent.putExtra("check",false);
@@ -95,7 +95,7 @@ public class allFile extends AppCompatActivity {
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), trash.class);
+                Intent intent = new Intent(getApplicationContext(), Trash.class);
                 intent.putExtra("check",1);
                 intent.putExtra("folderTitle", folderTitle);
                 startActivity(intent);

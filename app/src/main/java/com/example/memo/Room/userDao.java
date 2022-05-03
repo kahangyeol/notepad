@@ -68,8 +68,11 @@ public interface userDao {
     @Query("SELECT pin FROM memoTable WHERE id = :id AND root = :root")        // int 메모 고정 확인
     int loadPinMemo(int id, String root);
 
-    @Query("SELECT count(pin) FROM memoTable WHERE pin = 1 AND root is null")        // int 메모 고정 확인
+    @Query("SELECT count(pin) FROM memoTable WHERE pin = 1 AND root is null")        // int 폴더 고정 갯수
     int pinCount();
+
+    @Query("SELECT count(pin) FROM memoTable WHERE pin = 1 AND root = :root")        // int 폴더 고정 갯수
+    int pinCountMemo(String root);
 
     @Query("SELECT COUNT(id) FROM memoTable where root = :root AND id < 1000 ")        // int 휴지통에 넣은 메모의 root와 일치하는 갯수 확인
     int rollBack (String root);

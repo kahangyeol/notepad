@@ -17,7 +17,7 @@ import com.example.memo.Room.AppDatabase;
 import com.example.memo.Room.User;
 
 public class ItemView extends LinearLayout{
-    public TextView key;
+//    public TextView key;
     public TextView title;
     public TextView memoCount;
     public ImageView bookmark;
@@ -44,9 +44,8 @@ public class ItemView extends LinearLayout{
 
     void setContents(User user, boolean check) {
         title.setText(user.getFolderTitle()); //title
-        bookmark.getContext().getResources().getDrawable(R.drawable.star);
-        memoCount.setText("" + AppDatabase.getInstance(mContext).userDao().getAllMemoRoot(user.folderTitle).size());
-        pin.getContext().getResources().getDrawable(R.drawable.pin);
+        String countSet = Integer.toString(AppDatabase.getInstance(mContext).userDao().getAllMemoRoot(user.folderTitle).size());
+        memoCount.setText(countSet);
         checkbox.setChecked(check);
         int color;
         if (check) {

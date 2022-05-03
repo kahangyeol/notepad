@@ -19,14 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.memo.R;
 import com.example.memo.Room.AppDatabase;
 import com.example.memo.Room.User;
-import com.example.memo.create_memo;
-import com.example.memo.trash;
+import com.example.memo.Create_memo;
+import com.example.memo.Trash;
 
 import java.util.ArrayList;
 
 public class TrashRecyclerViewAdapter extends RecyclerView.Adapter<TrashRecyclerViewAdapter.MyViewHolder> {
 
-    Context mContext = trash.mContext;
+    Context mContext = Trash.mContext;
     AppDatabase db = AppDatabase.getInstance(mContext);
     private ArrayList<User> userData = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class TrashRecyclerViewAdapter extends RecyclerView.Adapter<TrashRecycler
     }
 
     public void count(){
-        TextView folderCount= ((trash)trash.mContext).findViewById(R.id.memo);
+        TextView folderCount= ((Trash) Trash.mContext).findViewById(R.id.memo);
         folderCount.setText("메모: "+getItemCount());
     }
 
@@ -148,7 +148,7 @@ public class TrashRecyclerViewAdapter extends RecyclerView.Adapter<TrashRecycler
             bookmark.getContext().getResources().getDrawable(R.drawable.star);
 
             itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(itemView.getContext(), create_memo.class);
+                Intent intent = new Intent(itemView.getContext(), Create_memo.class);
 //                intent.putExtra("root",user.getRoot());
 //                intent.putExtra("memoId",user.getId());
                 intent.putExtra("check",true);
