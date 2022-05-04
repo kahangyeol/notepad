@@ -176,7 +176,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         notifyDataSetChanged();
     }
 
-    public void selectStar(String root) {
+    public void selectStar(int root) {
         int size = userData.size();
         for (int i = 0, j = 0; i < size && j < selectCheckBox.size(); i++) {
             if (selectCheckBox.get(j) == i) {
@@ -196,7 +196,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         notifyDataSetChanged();
     }
 
-    public void selectPin(String root) {
+    public void selectPin(int root) {
         int size = userData.size();
         User user[] = new User[userData.size()];
         for (int i = 0; i < userData.size(); i++) {
@@ -290,7 +290,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 int getId = userData.get(position).id;
-                String root = userData.get(position).root;
+                int root = userData.get(position).root;
                 int passWord = AppDatabase.getInstance(mContext).userDao().loadPassWord(getId, root);
                 if (mItemViewType == 0) {
                     if (passWord == 0) {
@@ -360,7 +360,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         public boolean onMenuItemClick(MenuItem item) {
             int getId = item.getItemId();
             int position = getAdapterPosition();
-            String root = userData.get(position).root;
+            int root = userData.get(position).root;
             switch (getId) {
                 case R.id.star:
                     int star = AppDatabase.getInstance(mContext).userDao().loadStarMemo(position, root);
@@ -395,7 +395,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         }
     }
 
-    public void setPin(int position, String root) {
+    public void setPin(int position, int root) {
         db = AppDatabase.getInstance(mContext);
         User user = userData.get(position);
         int pin = AppDatabase.getInstance(mContext).userDao().loadPinMemo(position, root);
@@ -471,7 +471,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         db.userDao().updateTrashId(1, trashId, user.getId(), user.getRoot());// 아이디를 휴지통 전용으로(휴지통갯수 + 1000) 변경
         notifyItemRemoved(position);
 
-        String root = user.getRoot();
+        int root = user.getRoot();
         for (int i = user.getId(); i < getItemCount(); i++) {
             String temp = db.userDao().loadMemoTitle(root, i + 1);
             System.out.println("바꿀 아이디: " + temp);

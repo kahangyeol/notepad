@@ -30,7 +30,7 @@ public class User implements Parcelable {
     public int trash;
 
     @ColumnInfo(name = "root")
-    public String root;
+    public int root;
 
     @ColumnInfo(name = "star")
     public int star;
@@ -47,7 +47,7 @@ public class User implements Parcelable {
     @ColumnInfo(name = "editTime")
     public String editTime;
 
-    public User (int id,String folderTitle, int trash,String memoTitle, String content,String root,int star, int password, int pin, String createTime, String editTime){
+    public User (int id,String folderTitle, int trash,String memoTitle, String content,int root,int star, int password, int pin, String createTime, String editTime){
         this.id = id;
         this.folderTitle = folderTitle;
         this.trash = trash;
@@ -158,7 +158,7 @@ public class User implements Parcelable {
         this.trash = trash;
     }
 
-    public String getRoot(){ return root; }
+    public int getRoot(){ return root; }
 
     public void setRoot(){ this.root = root; }
 

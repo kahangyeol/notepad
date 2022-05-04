@@ -146,9 +146,9 @@ public class NewFolder extends AppCompatActivity implements View.OnClickListener
             }
 
         }else if(getId == binding.fabPin.getId()){
-            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectPin(folderTitle);
+            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectPin(folderId);
         }else if(getId == binding.fabStar.getId()) {
-            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectStar(folderTitle);
+            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectStar(folderId);
         }else if(getId == binding.fabLock.getId()){
 
         } else if(getId == binding.allCheck.getId()){
@@ -179,7 +179,7 @@ public class NewFolder extends AppCompatActivity implements View.OnClickListener
         recyclerView = (RecyclerView) ((Activity) mContext).findViewById(R.id.memoRecyclerView);
         adapter = new MemoRecyclerAdapter(this, recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
-        users = AppDatabase.getInstance(this).userDao().getAllMemoRoot(folderTitle);
+        users = AppDatabase.getInstance(this).userDao().getAllMemoRoot(folderId);
 
         for (int i = 0; i < users.size(); i++) {
             adapter.addItem(users.get(i));
@@ -256,7 +256,7 @@ public class NewFolder extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                int passWord = AppDatabase.getInstance(mContext).userDao().loadPassWord(id, folderTitle);
+                int passWord = AppDatabase.getInstance(mContext).userDao().loadPassWord(id, folderId);
 
                 if(check == 0){
                     Intent intent = new Intent(getApplicationContext(), Create_memo.class);
@@ -269,10 +269,10 @@ public class NewFolder extends AppCompatActivity implements View.OnClickListener
                 } else if(check == 1) {
                     if (passWord == 0) {
                         passWordCheck = fun_PassWordCheck("잠금 설정이 완료되었습니다.", true);
-                        AppDatabase.getInstance(mContext).userDao().updatePassWordOn(id, folderTitle);
+                        AppDatabase.getInstance(mContext).userDao().updatePassWordOn(id, folderId);
                     } else if (passWord == 1) {
                         passWordCheck = fun_PassWordCheck("잠금 설정이 해제되었습니다.", true);
-                        AppDatabase.getInstance(mContext).userDao().updatePassWordOff(id, folderTitle);
+                        AppDatabase.getInstance(mContext).userDao().updatePassWordOff(id, folderId);
                     }
                     ((MemoRecyclerAdapter)recyclerView.getAdapter()).notifyDataSetChanged();
                 }

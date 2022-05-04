@@ -415,7 +415,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                 if (mItemViewType == 0) {
                     Intent intent = new Intent(itemView.getContext(), NewFolder.class);
-                    intent.putExtra("folderTitle", user.getFolderTitle());
+                    intent.putExtra("folderTitle", user.getId());
                     intent.putExtra("folderId", user.getId());
                     itemView.getContext().startActivity(intent);
                     ((Activity) itemView.getContext()).finish();

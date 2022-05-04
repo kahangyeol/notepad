@@ -22,7 +22,7 @@ public interface userDao {
     List<User> getAllMemo();
 
     @Query("SELECT * FROM memoTable WHERE root = :root and id < 1000")                // User root로 메모 정보만불러오기
-    List<User> getAllMemoRoot(String root);
+    List<User> getAllMemoRoot(int root);
 
     @Query("SELECT * FROM memoTable WHERE trash = 1")                       // User 휴지통에 있는 정보만 불러오기
     List<User> trashGetAll();
@@ -31,7 +31,7 @@ public interface userDao {
     User selectFolder(String folderTitle);
 
     @Query("SELECT * FROM memoTable WHERE root = :root AND memoTitle = :memoTitle AND id = :id") // User 메모 제목과 root, id로 폴더 정보 불러오기
-    User selectMemo(String root, String memoTitle,int id);
+    User selectMemo(int root, String memoTitle,int id);
 
     @Query("SELECT * from memoTable where memoTitle = :memoTitle and trash = 1")    // User 휴지통에서 메모 제목으로 메모 정보 불러오기
     User selectTrash(String memoTitle);
@@ -46,25 +46,25 @@ public interface userDao {
     int starFolder(int id);
 
     @Query("SELECT star FROM memoTable WHERE id = :id AND root = :root")        // int 메모 즐겨찾기 확인
-    int loadStarMemo(int id,String root);
+    int loadStarMemo(int id,int root);
 
     @Query("SELECT password FROM memoTable WHERE id = :id AND root = :root")        // int 메모 잠금 확인
-    int loadPassWord(int id, String root);
+    int loadPassWord(int id, int root);
 
     @Query("SELECT pin FROM memoTable WHERE id = :id AND root is null")        // int 메모 고정 확인
     int loadPin(int id);
 
     @Query("SELECT pin FROM memoTable WHERE id = :id AND root = :root")        // int 메모 고정 확인
-    int loadPinMemo(int id, String root);
+    int loadPinMemo(int id, int root);
 
     @Query("SELECT count(pin) FROM memoTable WHERE pin = 1 AND root is null")        // int 폴더 고정 갯수
     int pinCount();
 
     @Query("SELECT count(pin) FROM memoTable WHERE pin = 1 AND root = :root")        // int 폴더 고정 갯수
-    int pinCountMemo(String root);
+    int pinCountMemo(int root);
 
     @Query("SELECT COUNT(id) FROM memoTable where root = :root AND id < 1000 ")        // int 휴지통에 넣은 메모의 root와 일치하는 갯수 확인
-    int rollBack (String root);
+    int rollBack (int root);
 
     @Query("SELECT COUNT(id) FROM memoTable WHERE trash = 1")        // int 휴지통에 갯수 확인
     int trashCount();
@@ -73,16 +73,16 @@ public interface userDao {
     User loadTrash(int id);
 
     @Query("SELECT memoTitle FROM memoTable WHERE root = :root and id = :id")
-    String loadMemoTitle(String root, int id);
+    String loadMemoTitle(int root, int id);
 
 
 
 
     @Query("UPDATE memoTable SET password = 1 WHERE id = :id AND root = :root")
-    void updatePassWordOn(int id,String root);
+    void updatePassWordOn(int id,int root);
 
     @Query("UPDATE memoTable SET password = 0 WHERE id = :id AND root = :root")
-    void updatePassWordOff(int id,String root);
+    void updatePassWordOff(int id,int root);
 
     @Query("UPDATE memoTable SET pin = 1 WHERE id = :id AND root is null")
     void updatePinOnFolder(int id);
@@ -91,16 +91,16 @@ public interface userDao {
     void updatePinOffFolder(int id);
 
     @Query("UPDATE memoTable SET pin = 1 WHERE id = :id AND root = :root")
-    void updatePinOn(int id,String root);
+    void updatePinOn(int id,int root);
 
     @Query("UPDATE memoTable SET pin = 0 WHERE id = :id AND root = :root")
-    void updatePinOff(int id,String root);
+    void updatePinOff(int id,int root);
 
     @Query("UPDATE memoTable SET star = 1 WHERE id = :id AND root = :root")
-    void updateStarOnMemo(int id,String root);
+    void updateStarOnMemo(int id,int root);
 
     @Query("UPDATE memoTable SET star = 0 WHERE id = :id AND root = :root")
-    void updateStarOffMemo(int id,String root);
+    void updateStarOffMemo(int id,int root);
 
     @Query("UPDATE memoTable SET star = 1 WHERE id = :id AND root is null")
     void updateStarOnFolder(int id);
@@ -109,7 +109,7 @@ public interface userDao {
     void updateStarOffFolder(int id);
 
     @Query("UPDATE memoTable SET memoTitle = :memoTitle, content = :content, editTime = :editTime WHERE id = :id AND root = :root")
-    void updateMemo(String memoTitle,String content,int id,String root, String editTime);
+    void updateMemo(String memoTitle,String content,int id,int root, String editTime);
 
     @Query("UPDATE memoTable SET id = :setId WHERE a = :pk AND root is null")
     void updateId(int setId, int pk);
@@ -118,22 +118,22 @@ public interface userDao {
     void updateIdSwap(int setId, int id, int pk);
 
     @Query("UPDATE memoTable SET id = :setId WHERE memoTitle = :memoTitle AND root = :root AND id = :id")
-    void updateMemoId(int setId, String memoTitle, String root, int id);
+    void updateMemoId(int setId, String memoTitle, int root, int id);
 
     @Query("UPDATE memoTable SET folderTitle = :folderTitle WHERE root is null and id = :id")
     void updateFolderTitle(String folderTitle,int id);
 
     @Query("UPDATE memoTable SET root = :folderTitle WHERE root = :root")
-    void updateRoot (String folderTitle, String root);
+    void updateRoot (String folderTitle, int root);
 
     @Query("UPDATE memoTable SET trash = :trash, id = :trashId WHERE id = :id AND root = :root")
-    void updateTrashId (int trash, int trashId, int id, String root);
+    void updateTrashId (int trash, int trashId, int id, int root);
 
 
 
 
     @Query("DELETE FROM memoTable WHERE root = :root")
-    void delMemo(String root);
+    void delMemo(int root);
 
     @Query("DELETE FROM memoTable WHERE folderTitle = :folderTitle AND id = :id")
     void delFolder(String folderTitle, int id);

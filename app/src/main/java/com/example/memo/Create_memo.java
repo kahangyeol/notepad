@@ -25,7 +25,7 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
     boolean backPressCheck = true;
     boolean check = true;
     EditText contentView, titleView;
-    String root;
+    int root;
     //    SharedPreferences pref;
     AppDatabase db;
     Intent getIntent;
@@ -51,7 +51,7 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
 
         } else {//새로만들기 클릭 했을때
             memoId = getIntent.getExtras().getInt("memoId");
-            root = getIntent.getExtras().getString("folderTitle");//폴더이름 가져오기
+            root = getIntent.getExtras().getString("folderTitle");//폴더ID 가져오기
             /*Button success = (Button) findViewById(R.id.succes);
             success.setOnClickListener(new View.OnClickListener() {
                 @Override

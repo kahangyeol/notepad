@@ -112,7 +112,7 @@ public class TrashRecyclerViewAdapter extends RecyclerView.Adapter<TrashRecycler
             userData.remove(user); //----------- 삭제용
             db.userDao().delete(user);
             notifyItemRemoved(position);
-            String root = user.getRoot();
+            int root = user.getRoot();
             for(int i = user.getId()-1000;i<getItemCount();i++) {
                 String temp = AppDatabase.getInstance(mContext).userDao()
                         .loadMemoTitle(root, 1000 + i + 1); //id가 1001인 메모 삭제하면 1000 + (1001 -1000) + 1 불러옴
@@ -129,7 +129,7 @@ public class TrashRecyclerViewAdapter extends RecyclerView.Adapter<TrashRecycler
             notifyItemRemoved(position);
             int memoId = db.userDao().rollBack(user.getRoot()); // root 파일 갯수 받아오기
             db.userDao().updateTrashId(0,memoId,user.getId(),user.getRoot()); //
-            String root = user.getRoot();
+            int root = user.getRoot();
             for(int i = user.getId()-1000;i<getItemCount();i++) {
                 String temp = AppDatabase.getInstance(mContext).userDao()
                         .loadMemoTitle(root, 1000 + i + 1); //id가 1001인 메모 복구하면 1000 + (1001 -1000) + 1 불러옴
