@@ -139,7 +139,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             moveSet();
         }*/
 
-
         if (formPin == 0 && toPin == 0) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
@@ -151,6 +150,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             setId();
             moveSet();
         }
+
+       /* if (formPin == 0 && toPin == 0) {
+            Collections.swap(userData, formPosition, toPosition);
+            notifyItemMoved(formPosition, toPosition);
+            *//*int swapId = userData.get(formPosition).getId();
+            String Title = userData.get(formPosition).getMemoTitle();
+            String root = userData.get(formPin).root;*//*
+            int pk = userData.get(formPin).a;   //드래그한 뷰의 pk 가져옴
+            AppDatabase.getInstance(mContext).userDao().updateId(toPosition, pk);   //받아온 pk의 아이디를 드래그로 변경한 뷰의 아이디로 변경
+            AppDatabase.getInstance(mContext).userDao().updateIdSwap(formPosition, toPosition, pk);     //받아온 pk와 다른 toPosition의 아이디를 가진 데이터의 아이디를 formPosition으로 변경
+            moveSet();
+        } else if (formPin == 1 && toPin == 1) {
+            Collections.swap(userData, formPosition, toPosition);
+            notifyItemMoved(formPosition, toPosition);
+            int pk = userData.get(formPin).a;   //드래그한 뷰의 pk 가져옴
+            AppDatabase.getInstance(mContext).userDao().updateId(toPosition, pk);   //받아온 pk의 아이디를 드래그로 변경한 뷰의 아이디로 변경
+            AppDatabase.getInstance(mContext).userDao().updateIdSwap(formPosition, toPosition, pk);     //받아온 pk와 다른 toPosition의 아이디를 가진 데이터의 아이디를 formPosition으로 변경
+            moveSet();
+        }*/
 
 
         return true;
@@ -502,7 +520,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         if (pin == 0) {
             int pinCount = AppDatabase.getInstance(mContext).userDao().pinCount();
             AppDatabase.getInstance(mContext).userDao().updatePinOnFolder(position);
-            AppDatabase.getInstance(mContext).userDao().updateId(pinCount, userData.get(position).getFolderTitle());
+            AppDatabase.getInstance(mContext).userDao().updateId(pinCount, userData.get(position).a);
             Collections.swap(userData, position, pinCount);
             for(int i = 0; i<selectCheckBox.size(); i++) {
                 if(position == selectCheckBox.get(i)){
@@ -512,7 +530,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         } else if (pin == 1) {
             AppDatabase.getInstance(mContext).userDao().updatePinOffFolder(position);
             int pinCount = AppDatabase.getInstance(mContext).userDao().pinCount();
-            AppDatabase.getInstance(mContext).userDao().updateId(pinCount, userData.get(position).getFolderTitle());
+            AppDatabase.getInstance(mContext).userDao().updateId(pinCount, userData.get(position).a);
             Collections.swap(userData, position, pinCount);
         }
 
@@ -522,8 +540,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void setId() {
         for (int i = 0; i < userData.size(); i++) {   // id 초기화
             User user = userData.get(i);
-            String folderTitle = user.getFolderTitle();
-            AppDatabase.getInstance(mContext).userDao().updateId(i, folderTitle);
+            int pk = user.a;
+            AppDatabase.getInstance(mContext).userDao().updateId(i, pk);
             user.setId(i);
             userData.set(i, user);
         }

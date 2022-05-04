@@ -18,9 +18,6 @@ public interface userDao {
     @Query("SELECT * FROM memoTable WHERE root is null Order by id")                // User 메모 정보만 불러오기
     List<User> getAllFolder();
 
-    @Query("SELECT count(id) FROM memoTable WHERE root is null")                // User 메모 정보만 불러오기
-    int getAllFolderCount();
-
     @Query("SELECT * FROM memoTable WHERE root is not null")                // User 메모 정보만 불러오기
     List<User> getAllMemo();
 
@@ -29,9 +26,6 @@ public interface userDao {
 
     @Query("SELECT * FROM memoTable WHERE trash = 1")                       // User 휴지통에 있는 정보만 불러오기
     List<User> trashGetAll();
-
-    @Query("SELECT * FROM memoTable WHERE root is null AND id = :id")                // User 메모 정보만 불러오기
-    User getFolder(int id);
 
     @Query("SELECT * from memoTable where folderTitle = :folderTitle")      // User 폴더 제목으로 폴더 정보 불러오기
     User selectFolder(String folderTitle);
@@ -42,11 +36,6 @@ public interface userDao {
     @Query("SELECT * from memoTable where memoTitle = :memoTitle and trash = 1")    // User 휴지통에서 메모 제목으로 메모 정보 불러오기
     User selectTrash(String memoTitle);
 
-    @Query("SELECT folderTitle FROM memoTable WHERE root is null")          // String 폴더 제목만 불러오기
-    List<String> getAllFolderTitle();
-
-    @Query("SELECT memoTitle FROM memoTable WHERE root is not null")        // String 메모 제목만 불러오기
-    List<String> getAllMemoTitle();
 
 
 
@@ -86,10 +75,6 @@ public interface userDao {
     @Query("SELECT memoTitle FROM memoTable WHERE root = :root and id = :id")
     String loadMemoTitle(String root, int id);
 
-    @Query("SELECT folderTitle FROM memoTable WHERE id = :id AND root is null")
-    String loadFolderTitle(int id);
-
-
 
 
 
@@ -126,8 +111,11 @@ public interface userDao {
     @Query("UPDATE memoTable SET memoTitle = :memoTitle, content = :content, editTime = :editTime WHERE id = :id AND root = :root")
     void updateMemo(String memoTitle,String content,int id,String root, String editTime);
 
-    @Query("UPDATE memoTable SET id = :id WHERE folderTitle = :folderTitle")
-    void updateId(int id, String folderTitle);
+    @Query("UPDATE memoTable SET id = :setId WHERE a = :pk AND root is null")
+    void updateId(int setId, int pk);
+
+    @Query("UPDATE memoTable SET id = :setId WHERE a != :pk AND id = :id AND root is null")
+    void updateIdSwap(int setId, int id, int pk);
 
     @Query("UPDATE memoTable SET id = :setId WHERE memoTitle = :memoTitle AND root = :root AND id = :id")
     void updateMemoId(int setId, String memoTitle, String root, int id);

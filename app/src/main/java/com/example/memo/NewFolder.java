@@ -298,8 +298,8 @@ public class NewFolder extends AppCompatActivity implements View.OnClickListener
     public void setId(){
         for(int i = 0; i < recyclerView.getAdapter().getItemCount(); i++){
             User user = ((MemoRecyclerAdapter)recyclerView.getAdapter()).userData.get(i);
-            String folderTitle = user.getFolderTitle();
-            AppDatabase.getInstance(this).userDao().updateId(i,folderTitle);
+            int id = user.getId();
+            AppDatabase.getInstance(this).userDao().updateId(i,id);
         }
         initialized(folderTitle);
         ((MemoRecyclerAdapter)recyclerView.getAdapter()).notifyDataSetChanged();

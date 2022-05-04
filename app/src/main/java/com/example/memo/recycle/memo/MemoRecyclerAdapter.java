@@ -103,49 +103,28 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         return userData.size();
     }
 
+    /*===========================ItemTouchHelper===========================*/
 /*
-    ===========================ItemTouchHelper===========================
-
     @Override
     public boolean onItemMove(int formPosition, int toPosition) {
-        *//*int formPin = userData.get(formPosition).pin;
+        int formPin = userData.get(formPosition).pin;
         int toPin = userData.get(toPosition).pin;
         if(formPin != toPin){
             return false;
-        }*//*
+        }
 
-        Collections.swap(userData, formPosition, toPosition);
-        notifyItemMoved(formPosition, toPosition);
-        *//*if (formPin == 0 && toPin == 0) {
-        }if (formPin == 1 && toPin == 1) {
-            Collections.swap(userData, formPosition, toPosition);
-            notifyItemMoved(formPosition, toPosition);
-        }*//*
-     *//*User user = userData.get(formPosition);
         if (formPin == 0 && toPin == 0) {
-            userData.remove(formPosition);
-            userData.add(toPosition,user);
+            Collections.swap(userData, formPosition, toPosition);
+            notifyItemMoved(formPosition, toPosition);
             setId();
             moveSet();
-        }if (formPin == 1 && toPin == 1) {
-            userData.remove(formPosition);
-            userData.add(toPosition,user);
+        } else if (formPin == 1 && toPin == 1) {
+            Collections.swap(userData, formPosition, toPosition);
+            notifyItemMoved(formPosition, toPosition);
             setId();
             moveSet();
-        }*//*
+        }
 
-     *//*if (formPin == 0 && toPin == 0) {
-            Collections.swap(userData, formPosition, toPosition);
-            notifyItemMoved(formPosition, toPosition);
-            setId();
-            moveSet();
-        }else if (formPin == 1 && toPin == 1) {
-            Collections.swap(userData, formPosition, toPosition);
-            notifyItemMoved(formPosition, toPosition);
-            setId();
-            moveSet();
-        }*//*
-        notifyItemMoved(formPosition,toPosition);
 
         return true;
     }
@@ -155,11 +134,11 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
 //        userData.remove(position);
         userData.remove(position);
         notifyItemRemoved(position);
-        *//* del(userData.get(position), position);
+         del(userData.get(position), position);
 
         TextView folderCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.folder_count);
         folderCount.setText("폴더: " + getItemCount());
-        notifyDataSetChanged();*//*
+        notifyDataSetChanged();
 
     }
 
@@ -424,7 +403,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             int pinCount = db.userDao().pinCountMemo(root);
 
             db.userDao().updatePinOn(position, root);
-            db.userDao().updateId(pinCount, user.getFolderTitle());
+            db.userDao().updateMemoId(pinCount, user.getMemoTitle(),root,user.getId());
             Collections.swap(userData, position, pinCount);
 
             for (int i = 0; i < selectCheckBox.size(); i++) {
@@ -435,7 +414,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         } else if (pin == 1) {
             db.userDao().updatePinOff(position,root);
             int pinCount = db.userDao().pinCountMemo(root);
-            db.userDao().updateMemoId(pinCount,user.getMemoTitle(), user.getFolderTitle(),user.getId());
+            db.userDao().updateMemoId(pinCount, user.getMemoTitle(), root, user.getId());
             Collections.swap(userData, position, pinCount);
         }
 
@@ -445,8 +424,8 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
     public void setId() {
         for (int i = 0; i < userData.size(); i++) {   // id 초기화
             User user = userData.get(i);
-            String folderTitle = user.getFolderTitle();
-            AppDatabase.getInstance(mContext).userDao().updateId(i, folderTitle);
+            int id = user.getId();
+            AppDatabase.getInstance(mContext).userDao().updateId(i, id);
             user.setId(i);
             userData.set(i, user);
         }
