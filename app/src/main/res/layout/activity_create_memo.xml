@@ -26,6 +26,7 @@
 
         <EditText
             android:id="@+id/title"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
@@ -35,7 +36,6 @@
             android:textColorHint="#C4C4C5"
             android:textSize="25sp"
             android:textStyle="bold"
-            style="@style/Widget.AppCompat.Button.Borderless"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.555"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,17 +67,15 @@
         android:gravity="top|left"
         android:hint="내용을 적어주세요"
         android:textColor="@color/black"
-        android:textColorHint="@color/darkgray"
-
-        app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
+        android:textColorHint="@color/darkgray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/createTime"
@@ -85,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="time"
-            android:textColor="@color/darkgray"/>
+            android:textColor="@color/darkgray" />
 
         <TextView
             android:id="@+id/editTime"
@@ -94,6 +92,6 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="time"
-            android:textColor="@color/darkgray"/>
+            android:textColor="@color/darkgray" />
     </LinearLayout>
 </RelativeLayout>

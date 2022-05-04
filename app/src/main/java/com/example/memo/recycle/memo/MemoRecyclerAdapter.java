@@ -1,27 +1,15 @@
 package com.example.memo.recycle.memo;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.text.Editable;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
+import android.view.ContextThemeWrapper;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -33,7 +21,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memo.Create_memo;
-import com.example.memo.MainActivity;
 import com.example.memo.NewFolder;
 import com.example.memo.R;
 import com.example.memo.Room.AppDatabase;
@@ -42,7 +29,7 @@ import com.example.memo.Room.User;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapter.MyViewHolder>{
+public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapter.MyViewHolder> {
 
     public static final int VIEWTYPE_NORMAL = 0;
     public static final int VIEWTYPE_EDIT = 1;
@@ -88,7 +75,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         if (viewType == VIEWTYPE_NORMAL) {
             view = new MemoItemView(mContext, R.layout.memorecycler_itmeview);
         } else {
-            view = new MemoItemView(mContext, R.layout.free_align_item);
+            view = new MemoItemView(mContext, R.layout.edit_memorecycler_itmeview);
         }
         MemoRecyclerAdapter.MyViewHolder mh = new MemoRecyclerAdapter.MyViewHolder(view);
         return mh;
@@ -134,7 +121,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
         }*//*
-        *//*User user = userData.get(formPosition);
+     *//*User user = userData.get(formPosition);
         if (formPin == 0 && toPin == 0) {
             userData.remove(formPosition);
             userData.add(toPosition,user);
@@ -147,7 +134,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             moveSet();
         }*//*
 
-        *//*if (formPin == 0 && toPin == 0) {
+     *//*if (formPin == 0 && toPin == 0) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
             setId();
@@ -204,33 +191,33 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             userData.remove(getIdx);
         }
         setId();
-        TextView folderCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.folder_count);
-        folderCount.setText("폴더: " + getItemCount());
+        TextView folderCount = ((NewFolder) NewFolder.mContext).findViewById(R.id.memo_count);
+        folderCount.setText("메모: " + getItemCount());
         selectCheckBox.removeAll(selectCheckBox);
         notifyDataSetChanged();
     }
 
-    public void selectStar() {
+    public void selectStar(String root) {
         int size = userData.size();
         for (int i = 0, j = 0; i < size && j < selectCheckBox.size(); i++) {
             if (selectCheckBox.get(j) == i) {
-                int star = AppDatabase.getInstance(mContext).userDao().starFolder(i);
+                int star = AppDatabase.getInstance(mContext).userDao().loadStarMemo(i,root);
                 if (star == 0) {
-                    AppDatabase.getInstance(mContext).userDao().updateStarOnFolder(i);
+                    AppDatabase.getInstance(mContext).userDao().updateStarOnMemo(i, root);
                 } else if (star == 1) {
-                    AppDatabase.getInstance(mContext).userDao().updateStarOffFolder(i);
+                    AppDatabase.getInstance(mContext).userDao().updateStarOffMemo(i, root);
                 }
                 j++;
             }
         }
         selectCheckBox.removeAll(selectCheckBox);
         isSelectedAll = false;
-        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+        RadioButton allCheck = ((NewFolder) NewFolder.mContext).findViewById(R.id.allCheck);
         allCheck.setChecked(false);
         notifyDataSetChanged();
     }
 
-    public void selectPin() {
+    public void selectPin(String root) {
         int size = userData.size();
         User user[] = new User[userData.size()];
         for (int i = 0; i < userData.size(); i++) {
@@ -241,17 +228,17 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         for (int i = 0, j = 0; i < size /*&& j < selectCheckBox.size()*/; i++) {
             if (j < selectCheckBox.size()) {
                 if (selectCheckBox.get(j) == i) {
-                    int pin = AppDatabase.getInstance(mContext).userDao().loadPin(i);
+                    int pin = AppDatabase.getInstance(mContext).userDao().loadPinMemo(i,root);
                     if (pin == 0) {
-                        AppDatabase.getInstance(mContext).userDao().updatePinOnFolder(i);
+                        AppDatabase.getInstance(mContext).userDao().updatePinOn(i,root);
                     } else if (pin == 1) {
-                        AppDatabase.getInstance(mContext).userDao().updatePinOffFolder(i);
+                        AppDatabase.getInstance(mContext).userDao().updatePinOff(i,root);
                     }
 //                setPin(i);
                     j++;
                 }
             }
-            int pin = AppDatabase.getInstance(mContext).userDao().loadPin(i);
+            int pin = AppDatabase.getInstance(mContext).userDao().loadPinMemo(i,root);
             if (pin == 1) {
                 pinCheckTrue.add(i);
             } else if (pin == 0) {
@@ -273,7 +260,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         setId();
         selectCheckBox.removeAll(selectCheckBox);
         isSelectedAll = false;
-        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+        RadioButton allCheck = ((NewFolder) NewFolder.mContext).findViewById(R.id.allCheck);
         allCheck.setChecked(false);
         notifyDataSetChanged();
     }
@@ -294,84 +281,8 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         }
     }
 
-    private void showDialogNewMemo(Dialog dialog, int position){
 
-        EditText et = dialog.findViewById(R.id.et_folderName);
-        Button yesBtn = dialog.findViewById(R.id.yesBtn);
-        TextView trashTxt = dialog.findViewById(R.id.newFolder_txt);
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Spannable span = (Spannable) trashTxt.getText();
-        span.setSpan(new StyleSpan(Typeface.BOLD),0,8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        span.setSpan(new AbsoluteSizeSpan(70),0,8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        yesBtn.setEnabled(true);
-        et.setText(userData.get(position).folderTitle);
-        et.selectAll();
-
-        dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String editFolderName = et.getText().toString();
-                if (!editFolderName.equals("")) {
-                    int i = position;
-                    User userTemp = userData.get(i);
-                    User folderName = new User(i, editFolderName, 0, "", "", null, userTemp.star, userTemp.password, userTemp.pin, userTemp.editTime,userTemp.createTime);
-                    //변경 이름 저장
-                    AppDatabase.getInstance(mContext).userDao().updateFolderTitle(editFolderName, i);
-                    AppDatabase.getInstance(mContext).userDao().updateRoot(editFolderName, userTemp.getFolderTitle());
-
-                    userData.set(position, folderName);
-
-                    notifyItemChanged(position);
-                    dialog.dismiss();
-                } else {
-                    androidx.appcompat.app.AlertDialog.Builder noname = new androidx.appcompat.app.AlertDialog.Builder(mContext);
-                    noname.setTitle("폴더 이름을 입력하세요");
-                    //noname.setMessage("제목없는 폴더는 만들수 없습니다");
-                    noname.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    noname.show();
-                }
-            }
-        });
-        dialog.show();
-
-        showKeyboard(et);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-        dialog.findViewById(R.id.noBtn).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                dialog.dismiss();
-            }
-        });
-
-        et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                yesBtn.setEnabled(!(et.getText().toString().isEmpty()));
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-    }
-
-
-    private void showKeyboard(EditText et){
+    private void showKeyboard(EditText et) {
         InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         et.requestFocus();
@@ -392,7 +303,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             key = itemView.findViewById(R.id.key);
             drag = itemView.findViewById(R.id.lineUp);
             checkBox = itemView.findViewById(R.id.checkbox);
-            RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+            RadioButton allCheck = ((NewFolder) NewFolder.mContext).findViewById(R.id.allCheck);
 
             /*checkBox.setOnClickListener(v -> {
                 setColor(allCheck, getAdapterPosition());
@@ -402,7 +313,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
                 int getId = userData.get(position).id;
                 String root = userData.get(position).root;
                 int passWord = AppDatabase.getInstance(mContext).userDao().loadPassWord(getId, root);
-                if(mItemViewType == 0) {
+                if (mItemViewType == 0) {
                     if (passWord == 0) {
                         Intent intent = new Intent(itemView.getContext(), Create_memo.class);
 //                intent.putExtra("root",user.getRoot());
@@ -414,10 +325,9 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
                         ((Activity) itemView.getContext()).finish();
                     } else if (passWord == 1) {
                         ((NewFolder) NewFolder.mContext).passWord(getId, 0);
-
                     }
-                }else{
-                    setColor(allCheck,position);
+                } else {
+                    setColor(allCheck, position);
                 }
             });
 
@@ -456,8 +366,9 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         }
 
         private void showMenu(View v) {
-            PopupMenu popup = new PopupMenu(mContext, v);
-            popup.setOnMenuItemClickListener(this);// to implement on click event on items of menu
+            Context wrapper = new ContextThemeWrapper(mContext,R.style.MyPopupMenu);
+            PopupMenu popup = new PopupMenu(wrapper,v);
+            popup.setOnMenuItemClickListener(this);//
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.memo_menu, popup.getMenu());
             popup.show();
@@ -473,20 +384,20 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             String root = userData.get(position).root;
             switch (getId) {
                 case R.id.star:
-                    int star = AppDatabase.getInstance(mContext).userDao().loadStarMemo(position,root);
+                    int star = AppDatabase.getInstance(mContext).userDao().loadStarMemo(position, root);
                     if (star == 0) {
-                        AppDatabase.getInstance(mContext).userDao().updateStarOnMemo(position,root);
+                        AppDatabase.getInstance(mContext).userDao().updateStarOnMemo(position, root);
                     } else if (star == 1) {
-                        AppDatabase.getInstance(mContext).userDao().updateStarOffMemo(position,root);
+                        AppDatabase.getInstance(mContext).userDao().updateStarOffMemo(position, root);
                     }
                     notifyDataSetChanged();
                     break;
                 case R.id.delete:
-                    del(userData.get(getId),getId);
+                    del(userData.get(getId), getId);
                     notifyDataSetChanged();
 
-                    TextView memoCount = ((NewFolder)NewFolder.mContext).findViewById(R.id.memo_count);
-                    memoCount.setText("메모: "+getItemCount());
+                    TextView memoCount = ((NewFolder) NewFolder.mContext).findViewById(R.id.memo_count);
+                    memoCount.setText("메모: " + getItemCount());
 
                     break;
                 case R.id.pin:
@@ -494,7 +405,7 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
                     notifyDataSetChanged();
                     break;
                 case R.id.update:
-                    ((NewFolder)NewFolder.mContext).passWord(getId,1);
+                    ((NewFolder) NewFolder.mContext).passWord(getId, 1);
                     break;
             }
             return false;
@@ -507,23 +418,24 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
 
     public void setPin(int position, String root) {
         db = AppDatabase.getInstance(mContext);
+        User user = userData.get(position);
         int pin = AppDatabase.getInstance(mContext).userDao().loadPinMemo(position, root);
         if (pin == 0) {
             int pinCount = db.userDao().pinCountMemo(root);
 
-            db.userDao().updatePinOn(position,root);
-            db.userDao().updateId(pinCount, userData.get(position).getFolderTitle());
+            db.userDao().updatePinOn(position, root);
+            db.userDao().updateId(pinCount, user.getFolderTitle());
             Collections.swap(userData, position, pinCount);
 
-            for(int i = 0; i<selectCheckBox.size(); i++) {
-                if(position == selectCheckBox.get(i)){
+            for (int i = 0; i < selectCheckBox.size(); i++) {
+                if (position == selectCheckBox.get(i)) {
                     selectCheckBox.set(i, pinCount);
                 }
             }
         } else if (pin == 1) {
-            db.userDao().updatePinOffFolder(position);
-            int pinCount = db.userDao().pinCount();
-            db.userDao().updateId(pinCount, userData.get(position).getFolderTitle());
+            db.userDao().updatePinOff(position,root);
+            int pinCount = db.userDao().pinCountMemo(root);
+            db.userDao().updateMemoId(pinCount,user.getMemoTitle(), user.getFolderTitle(),user.getId());
             Collections.swap(userData, position, pinCount);
         }
 
@@ -548,7 +460,8 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
             color = ContextCompat.getColor(mContext, R.color.gray);
         }
 //        itemView.findViewById(R.id.imageView).setBackgroundColor(color);
-        itemView.findViewById(R.id.pin).setBackgroundColor(color);
+        itemView.findViewById(R.id.iv_left).setBackgroundColor(color);
+        itemView.findViewById(R.id.iv_right).setBackgroundColor(color);
         itemView.findViewById(R.id.lineUp).setBackgroundColor(color);
         itemView.findViewById(R.id.root).setBackgroundColor(color);
     }
@@ -568,31 +481,31 @@ public class MemoRecyclerAdapter extends RecyclerView.Adapter<MemoRecyclerAdapte
         notifyDataSetChanged();
     }
 
-    public void selectCount(){
-        TextView selectCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.selectFolder);
-        selectCount.setText("선택된 폴더 " + selectCheckBox.size());
+    public void selectCount() {
+        TextView selectCount = ((NewFolder) NewFolder.mContext).findViewById(R.id.selectMemo);
+        selectCount.setText("선택된 메모 " + selectCheckBox.size());
     }
 
     public void del(User user, int position) {
         userData.remove(user); //----------- 삭제용
-        AppDatabase.getInstance(mContext).userDao().delMemo(user.getFolderTitle());
-        AppDatabase.getInstance(mContext).userDao().delFolder(user.getFolderTitle(), position);
+        int trashId = db.userDao().trashCount() + 1000; // 휴지통갯수 + 1000
+        db.userDao().updateTrashId(1, trashId, user.getId(), user.getRoot());// 아이디를 휴지통 전용으로(휴지통갯수 + 1000) 변경
+        notifyItemRemoved(position);
 
-            /*user.setId(user.getId()+1000);
-            user.setTrash(true);*/
-        setId();
-        /*notifyItemRemoved(position);
+        String root = user.getRoot();
         for (int i = user.getId(); i < getItemCount(); i++) {
-            String temp = AppDatabase.getInstance(mContext).userDao().loadFolderTitle(i + 1);
-            AppDatabase.getInstance(mContext).userDao().updateId(i, temp);
-            User user1 = AppDatabase.getInstance(mContext).userDao().selectFolder(userData.get(i).getFolderTitle());
+            String temp = db.userDao().loadMemoTitle(root, i + 1);
+            System.out.println("바꿀 아이디: " + temp);
+            db.userDao().updateMemoId(i, temp, root, i + 1);
+            System.out.println("바뀐 아이디:" + i);
+            User user1 = db.userDao().selectMemo(user.getRoot(), temp, i);
             userData.set(i, user1);
-        }*/
-        db.getInstance(mContext).userDao().delete(user);
-
+        }
         notifyDataSetChanged();
     }
-} /*{
+
+}
+/*{
     boolean passWordCheck;
     Context mContext = NewFolder.mContext;
     AppDatabase db = AppDatabase.getInstance(mContext);

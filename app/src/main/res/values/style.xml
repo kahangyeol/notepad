@@ -7,4 +7,9 @@
         <item name="android:activityCloseEnterAnimation">@anim/hold</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
+    
+    <style name="MyPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:itemBackground">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

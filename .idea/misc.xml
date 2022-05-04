@@ -18,25 +18,28 @@
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.196" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/layout_border.xml" value="0.23697916666666666" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/pin.xml" value="0.196" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/popupmenu_bg.xml" value="0.1005" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/recyclerview.xml" value="0.196" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/star.xml" value="0.196" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/trash_dialog.xml" value="0.196" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/drawable/txt_color.xml" value="0.196" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_all_file.xml" value="0.264" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_bookmark.xml" value="0.37135416666666665" />
-        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_create_memo.xml" value="0.25" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_create_memo.xml" value="0.2" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_edit.xml" value="0.264" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_free_align.xml" value="0.264" />
-        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_memo.xml" value="0.2" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_memo1.xml" value="0.37135416666666665" />
-        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_new_folder.xml" value="0.33" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_new_folder.xml" value="0.2" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_save_memo.xml" value="0.30625" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_search.xml" value="0.30625" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_trash.xml" value="0.176" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/activity_trash_folder.xml" value="0.21195652173913043" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/content_save_memo.xml" value="0.37135416666666665" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/dialog.xml" value="0.5" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/edi_memorecycler_itmeview.xml" value="0.24270833333333333" />
+        <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/edit_memorecycler_itmeview.xml" value="0.25" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/folder.xml" value="0.18059777102330293" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/folder_list.xml" value="0.1984375" />
         <entry key="..\:/Users/dream/AndroidStudioProjects/DreamMemo/app/src/main/res/layout/folderrecycler_itemview.xml" value="0.1" />

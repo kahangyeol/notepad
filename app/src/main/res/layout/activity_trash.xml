@@ -44,7 +44,7 @@
             app:backgroundTint="@color/yellow" />-->
 
         <ImageButton
-            android:id="@+id/imageButton10"
+            android:id="@+id/btnBack"
             android:layout_width="30dp"
             android:layout_height="70dp"
             android:layout_marginLeft="10dp"

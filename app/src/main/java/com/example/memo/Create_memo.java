@@ -19,8 +19,10 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
     String memoTitle, content;
     ActivityCreateMemoBinding binding;
     List<User> users;
+    User user;
     int memoId = 0;
     int backHistory = 0;
+    boolean backPressCheck = true;
     boolean check = true;
     EditText contentView, titleView;
     String root;
@@ -34,23 +36,11 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
         binding = ActivityCreateMemoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        init();
         setOnClickListener();
 
-        titleView = (EditText) findViewById(R.id.title);
-        contentView = (EditText) findViewById(R.id.content);
-
-        /*ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });*/
-
+        init();
         if (check) {//이미 만들어진 메모 클릭 했을때
-            User user = getIntent().getParcelableExtra("data"); //클릭한 user data 받아오기
-            fileModify(user);
+//            fileModify(user);
 
             memoId = user.getId();
             memoTitle = user.getMemoTitle();
@@ -73,20 +63,38 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
     }
 
     private void init() {
-        db = AppDatabase.getInstance(this);
-        users = db.userDao().getAll();
+        titleView = (EditText) findViewById(R.id.title);
+        contentView = (EditText) findViewById(R.id.content);
 
         getIntent = getIntent();
-        backHistory = getIntent.getExtras().getInt("backHistory", 0);
         check = getIntent.getExtras().getBoolean("check");//true = 이미만들어진 메모 불러오기 flase = 메모 새로만들기
+        if(check) {
+            backHistory = getIntent.getExtras().getInt("backHistory", 0);
+            user = getIntent().getParcelableExtra("data"); //클릭한 user data 받아오기
 
-        User user = users.get(memoId);
-        binding.createTime.setText(user.createTime);
-        binding.editTime.setText(user.editTime);
+            db = AppDatabase.getInstance(this);
+            users = db.userDao().getAllMemoRoot(user.getRoot());
+
+            /*   시간설정   */
+//        User user = users.get(memoId);
+            String createTime = users.get(user.id).createTime;
+            String editTime = users.get(user.id).editTime;
+            binding.createTime.setText("생성일: " + createTime);
+            binding.editTime.setText("편집일: " + editTime);
+        } else {
+            binding.createTime.setText("");
+            binding.editTime.setText("");
+        }
     }
 
     @Override
     public void onBackPressed() {
+        if (check) {
+            /*  backPressCheck 메모가 변경되지 않았을때 false 로 만든다  */
+            backPressCheck = !(user.content.equals(content) && user.memoTitle.equals(memoTitle));
+        } else {
+            backPressCheck = !(binding.title.getText().toString().isEmpty() && binding.content.getText().toString().isEmpty());
+        }
         success();
         super.onBackPressed();
     }
@@ -114,32 +122,35 @@ public class Create_memo extends AppCompatActivity implements View.OnClickListen
     }
 
     public void makeNewFile() {
-        memoTitle = titleView.getText().toString();
-        if (memoTitle.equals("")) {//  메모 제목 안적으면 제목없음으로 저장
-            memoTitle = "제목없음";
-        }
-        content = contentView.getText().toString();
+        if (backPressCheck) {
+            memoTitle = titleView.getText().toString();
+            if (memoTitle.equals("")) {//  메모 제목 안적으면 제목없음으로 저장
+                memoTitle = "제목없음";
+            }
+            content = contentView.getText().toString();
 
-        String createTime = getTime();
-        User user = new User(memoId, null, 0, memoTitle, content, root, 0, 0, 0, createTime, createTime);
-        db.userDao().insertAll(user);
+            String createTime = getTime();
+            User user = new User(memoId, null, 0, memoTitle, content, root, 0, 0, 0, createTime, createTime);
+            AppDatabase.getInstance(this).userDao().insertAll(user);
+        }
     }
 
     public String getTime() {
-        long nowTime = System.currentTimeMillis();
-        Date date = new Date(nowTime);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         return dateFormat.format(date);
     }
 
-    public void fileModify(User user) {
-        memoTitle = titleView.getText().toString();
-        if (memoTitle.equals("")) {//  메모 제목 안적으면 제목없음으로 저장
-            memoTitle = "제목없음";
+    public void fileModify(User user) { //수정
+        if(backPressCheck) {
+            memoTitle = titleView.getText().toString();
+            if (memoTitle.equals("")) {//  메모 제목 안적으면 제목없음으로 저장
+                memoTitle = "제목없음";
+            }
+            content = contentView.getText().toString();
+            db.userDao().updateMemo(memoTitle, content, user.getId(), user.getRoot(), getTime());
         }
-        content = contentView.getText().toString();
-        db.userDao().updateMemo(memoTitle, content, user.getId(), user.getRoot());
-        root = user.getRoot();
+        root = user.getRoot();  //""이면 모든파일로 가기 위해
     }
 
     private void setOnClickListener() {

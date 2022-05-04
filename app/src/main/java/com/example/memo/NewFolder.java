@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memo.Room.AppDatabase;
 import com.example.memo.Room.User;
+import com.example.memo.databinding.ActivityNewFolderBinding;
 import com.example.memo.recycle.memo.MemoRecyclerAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -31,25 +34,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class NewFolder extends AppCompatActivity {
+public class NewFolder extends AppCompatActivity implements View.OnClickListener {
+    private ActivityNewFolderBinding binding;
     public static Context mContext;
     List<User> users;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     MemoRecyclerAdapter adapter;
-    //리사이클러뷰
     ImageButton newMemo;// ID = newMemo
-    LinearLayout layout;// ID = memo_list
-    //View
-//    int nButtonId[] = new int[100000];
+    ImageButton trash;
     List<Integer> nButtonId = new ArrayList<>();
-    boolean passWodrCheck;
-    int count = 0;
+    boolean passWordCheck, editCheck = true, fabCheck = false;
     int folderId;
-    String value, folderTitle;
-    String[] value_save = new String[100000];
+    String folderTitle;
     SharedPreferences pref;
-    AppDatabase db;
     private AdView mAdView;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
@@ -58,7 +56,8 @@ public class NewFolder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_folder);
+        binding = ActivityNewFolderBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -69,7 +68,7 @@ public class NewFolder extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        mContext = this;
+        setOnClickListener();
 
         Intent intent = getIntent();
         folderTitle = intent.getExtras().getString("folderTitle");
@@ -81,7 +80,7 @@ public class NewFolder extends AppCompatActivity {
         TextView folderTitleTextView = findViewById(R.id.title); //폴더 이름 텍스트뷰에 입력
         folderTitleTextView.setText(folderTitle);
         //-----------------뒤로가기(꺽쇠괄호)클릭----------------------
-        ImageButton imageButton10 = (ImageButton) findViewById(R.id.imageButton10);
+        ImageButton imageButton10 = (ImageButton) findViewById(R.id.btnBack);
         imageButton10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +103,6 @@ public class NewFolder extends AppCompatActivity {
             }
         });
 
-        ImageButton trash;
         trash = (ImageButton) findViewById(R.id.trash);
         trash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +116,66 @@ public class NewFolder extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onClick(View view) {
+        int getId = view.getId();
+        if(getId == binding.fabMain.getId()){
+            if(!fabCheck) {
+                Animation fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+                binding.fabMain.setImageResource(R.drawable.ic_baseline_close_24);
+                binding.fabStar.startAnimation(fab_open);
+                binding.fabPin.startAnimation(fab_open);
+                binding.fabLock.startAnimation(fab_open);
+                binding.fabStar.setVisibility(View.VISIBLE);
+                binding.fabPin.setVisibility(View.VISIBLE);
+                binding.fabLock.setVisibility(View.VISIBLE);
+
+                fabCheck = true;
+            }else if(fabCheck){
+                Animation fab_close = AnimationUtils.loadAnimation(mContext,R.anim.fab_close);
+                binding.fabMain.setImageResource(R.drawable.ic_baseline_add_24);
+                binding.fabStar.startAnimation(fab_close);
+                binding.fabPin.startAnimation(fab_close);
+                binding.fabLock.startAnimation(fab_close);
+                binding.fabStar.setVisibility(View.INVISIBLE);
+                binding.fabPin.setVisibility(View.INVISIBLE);
+                binding.fabLock.setVisibility(View.INVISIBLE);
+
+                fabCheck = false;
+            }
+
+        }else if(getId == binding.fabPin.getId()){
+            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectPin(folderTitle);
+        }else if(getId == binding.fabStar.getId()) {
+            ((MemoRecyclerAdapter)recyclerView.getAdapter()).selectStar(folderTitle);
+        }else if(getId == binding.fabLock.getId()){
+
+        } else if(getId == binding.allCheck.getId()){
+            ((MemoRecyclerAdapter)recyclerView.getAdapter()).All();
+            binding.allCheck.setChecked(((MemoRecyclerAdapter)recyclerView.getAdapter()).isSelectedAll);
+
+        }/*else if(getId == binding.search.getId()){
+            showMenu(view);
+        }*/
+    }
+
+    private void setOnClickListener() {
+        binding.fabMain.setOnClickListener(this);
+        binding.fabPin.setOnClickListener(this);
+        binding.fabLock.setOnClickListener(this);
+        binding.fabStar.setOnClickListener(this);
+        binding.allCheck.setOnClickListener(this);
+    }
+
     private void count() {
         TextView folderCount = (TextView) findViewById(R.id.memo_count);
         folderCount.setText("메모: " + (adapter.getItemCount()));
     }
 
     public void initialized(String folderTitle) {
+        mContext = this;
+
         recyclerView = (RecyclerView) ((Activity) mContext).findViewById(R.id.memoRecyclerView);
         adapter = new MemoRecyclerAdapter(this, recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -133,15 +185,62 @@ public class NewFolder extends AppCompatActivity {
             adapter.addItem(users.get(i));
             nButtonId.add(i);
         }
-        /*RecyclerDecoration spaceDecoration = new RecyclerDecoration(-30);
-        //리싸이클러뷰 간격조절
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation());
-
-        //리싸이클러뷰 구분선 생성
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.addItemDecoration(spaceDecoration);*/
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+        ImageButton edit = findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation ani = AnimationUtils.loadAnimation(mContext,R.anim.slide_in_right);
+                RadioButton checkBox = findViewById(R.id.allCheck);
+                if (editCheck) {
+                    adapter.setItemViewType(MemoRecyclerAdapter.VIEWTYPE_EDIT);
+                    recyclerView.startAnimation(ani);
+                    binding.fabMain.setVisibility(View.VISIBLE);
+                    binding.edit.setImageResource(R.drawable.editing);
+                    checkBox.setVisibility(View.VISIBLE);
+                    binding.selectMemo.setText("선택된 폴더: 0");
+
+                    trash.setImageResource(R.drawable.trash_edit);
+                    trash.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    editCheck = false;
+                    ((MemoRecyclerAdapter)recyclerView.getAdapter()).keepItemView = new ArrayList<>();
+
+                } else if(!editCheck){
+                    adapter.setItemViewType(MemoRecyclerAdapter.VIEWTYPE_NORMAL);
+                    recyclerView.startAnimation(ani);
+                    binding.edit.setImageResource(R.drawable.edit);
+                    binding.fabMain.setVisibility(View.GONE);
+                    binding.fabMain.setImageResource(R.drawable.ic_baseline_add_24);
+                    binding.fabPin.setVisibility(View.INVISIBLE);
+                    binding.fabLock.setVisibility(View.INVISIBLE);
+                    binding.fabStar.setVisibility(View.INVISIBLE);
+                    checkBox.setVisibility(View.GONE);
+                    binding.selectMemo.setText("");
+
+                    trash.setImageResource(R.drawable.trash);
+                    trash.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), Trash.class);
+                            intent.putExtra("check",0);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    setId();
+                    editCheck = true;
+                    fabCheck = false;
+                    binding.allCheck.setChecked(false);
+                }
+            }
+        });
 
     }
 
@@ -151,7 +250,7 @@ public class NewFolder extends AppCompatActivity {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-                passWodrCheck = fun_PassWordCheck("error",false);
+                passWordCheck = fun_PassWordCheck("error",false);
             }
 
             @Override
@@ -169,10 +268,10 @@ public class NewFolder extends AppCompatActivity {
                     finish();
                 } else if(check == 1) {
                     if (passWord == 0) {
-                        passWodrCheck = fun_PassWordCheck("잠금 설정이 완료되었습니다.", true);
+                        passWordCheck = fun_PassWordCheck("잠금 설정이 완료되었습니다.", true);
                         AppDatabase.getInstance(mContext).userDao().updatePassWordOn(id, folderTitle);
                     } else if (passWord == 1) {
-                        passWodrCheck = fun_PassWordCheck("잠금 설정이 해제되었습니다.", true);
+                        passWordCheck = fun_PassWordCheck("잠금 설정이 해제되었습니다.", true);
                         AppDatabase.getInstance(mContext).userDao().updatePassWordOff(id, folderTitle);
                     }
                     ((MemoRecyclerAdapter)recyclerView.getAdapter()).notifyDataSetChanged();
@@ -182,7 +281,7 @@ public class NewFolder extends AppCompatActivity {
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                passWodrCheck = fun_PassWordCheck("fail",false);
+                passWordCheck = fun_PassWordCheck("fail",false);
             }
         });
         promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("지문인증").setSubtitle("인증해").setNegativeButtonText("취소").setDeviceCredentialAllowed(false).build();
@@ -196,10 +295,50 @@ public class NewFolder extends AppCompatActivity {
         return passWordCheck;
     }
 
+    public void setId(){
+        for(int i = 0; i < recyclerView.getAdapter().getItemCount(); i++){
+            User user = ((MemoRecyclerAdapter)recyclerView.getAdapter()).userData.get(i);
+            String folderTitle = user.getFolderTitle();
+            AppDatabase.getInstance(this).userDao().updateId(i,folderTitle);
+        }
+        initialized(folderTitle);
+        ((MemoRecyclerAdapter)recyclerView.getAdapter()).notifyDataSetChanged();
+    }
+
     @Override
     public void onBackPressed(){
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-        finish();
+        if(editCheck) {
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            initialized(folderTitle);
+            editCheck = true;
+            Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_right);
+            RadioButton checkBox = findViewById(R.id.allCheck);
+            recyclerView.startAnimation(ani);
+
+            binding.fabMain.setVisibility(View.GONE);
+            binding.fabMain.setImageResource(R.drawable.ic_baseline_add_24);
+            binding.fabPin.setVisibility(View.INVISIBLE);
+            binding.fabLock.setVisibility(View.INVISIBLE);
+            binding.fabStar.setVisibility(View.INVISIBLE);
+            checkBox.setVisibility(View.GONE);
+
+            trash.setImageResource(R.drawable.trash);
+            trash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), Trash.class);
+                    intent.putExtra("check", 0);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            setId();
+            editCheck = true;
+            fabCheck = false;
+            binding.allCheck.setChecked(false);
+        }
     }
 }

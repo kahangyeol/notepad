@@ -5,7 +5,6 @@ package com.example.memo;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +17,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.ContextThemeWrapper;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +29,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -58,16 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean editCheck = true, fabCheck = false;
     RecyclerView recyclerView;
     List<User> users;
-    Button[] nButton;//버튼 생성관련
-    LinearLayout layout;
-    int count = 0;
     TextView folderCount; //폴더 개수
-    Button btn_allfile; // btn_allfile 모든파일, bookmark 즐겨찾기
+    Button allFile; // allFile 모든파일, bookmark 즐겨찾기
     ImageButton trash, btn01, btn_edit, search; //trash 휴지통, btn01 새로만들기, btn_edit 편집
-
-    String value;
-    String value_save[] = new String[10000];
-    SharedPreferences pref;
     LinearLayoutManager linearLayoutManager;
     AppDatabase db;
     private RecyclerAdapter adapter;
@@ -81,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initialized();
             editCheck = true;
             Animation ani = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_right);
-            RadioButton checkBox = findViewById(R.id.allcheck);
+            RadioButton checkBox = findViewById(R.id.allCheck);
             recyclerView.startAnimation(ani);
 
             binding.fabMain.setVisibility(View.GONE);
@@ -103,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setId();
             editCheck = true;
             fabCheck = false;
-            binding.allcheck.setChecked(false);
+            binding.allCheck.setChecked(false);
 
         }
     }
@@ -129,7 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mContext = this;
         db = AppDatabase.getInstance(this);
 
-        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(users, adapter,this);
+
+
+        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(users, adapter,mContext);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
        /* RecyclerDecoration spaceDecoration = new RecyclerDecoration(-30);
@@ -142,15 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);*/
 
-        layout = findViewById(R.id.linearLayout3);
-        nButton = new Button[10000];
-        pref = getSharedPreferences("Save", Context.MODE_PRIVATE);
 
 //-------------------버튼 카운트(갯수) 불러오기-------------------
 //        count = db.userDao().getAll().size();
 
         count();
-        Button button = new Button(this);//버튼 생성관련
         //-------------새로만들기 클릭-------------
         search = (ImageButton)findViewById(R.id.search);
 
@@ -168,8 +158,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         count();
         //-------------모든파일 클릭-------------
-        btn_allfile = (Button) findViewById(R.id.Button1);
-        btn_allfile.setOnClickListener(
+        allFile = (Button) findViewById(R.id.Button1);
+        allFile.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), AllFile.class);
@@ -202,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showMenu(View v)
     {
         //with icon
-        PopupMenu popup = new PopupMenu(this,v);
+        Context wrapper = new ContextThemeWrapper(mContext,R.style.MyPopupMenu);
+        PopupMenu popup = new PopupMenu(wrapper,v);
         popup.setOnMenuItemClickListener(this);// to implement on click event on items of menu
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.list_menu, popup.getMenu());
@@ -246,9 +237,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ((RecyclerAdapter)recyclerView.getAdapter()).selectPin();
         }else if(getId == binding.fabStar.getId()) {
             ((RecyclerAdapter)recyclerView.getAdapter()).selectStar();
-        }else if(getId == binding.allcheck.getId()){
+        }else if(getId == binding.allCheck.getId()){
             ((RecyclerAdapter)recyclerView.getAdapter()).All();
-            binding.allcheck.setChecked(((RecyclerAdapter)recyclerView.getAdapter()).isSelectedAll);
+            binding.allCheck.setChecked(((RecyclerAdapter)recyclerView.getAdapter()).isSelectedAll);
 
         }/*else if(getId == binding.search.getId()){
             showMenu(view);
@@ -288,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Animation ani = AnimationUtils.loadAnimation(mContext,R.anim.slide_in_right);
-                RadioButton checkBox = findViewById(R.id.allcheck);
+                RadioButton checkBox = findViewById(R.id.allCheck);
                 if (editCheck) {
                     adapter.setItemViewType(RecyclerAdapter.VIEWTYPE_EDIT);
                     recyclerView.startAnimation(ani);
@@ -319,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     binding.fabPin.setVisibility(View.INVISIBLE);
                     binding.fabStar.setVisibility(View.INVISIBLE);
                     checkBox.setVisibility(View.GONE);
-                    binding.selectFolder.setText("선택된 폴더: 0");
+                    binding.selectFolder.setText("");
 
                     trash.setImageResource(R.drawable.trash);
                     trash.setOnClickListener(new View.OnClickListener() {
@@ -334,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     setId();
                     editCheck = true;
                     fabCheck = false;
-                    binding.allcheck.setChecked(false);
+                    binding.allCheck.setChecked(false);
                 }
             }
         });
@@ -385,18 +376,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                value = et.getText().toString();
-                if (!value.equals("")) {
+                String newFolderName = et.getText().toString();
+                if (!newFolderName.equals("")) {
                     String s = et.getText().toString();
                     System.out.println(s);
                     users = AppDatabase.getInstance(mContext).userDao().getAll();
 //                             adapter.addItems((ArrayList)users);
-                    pushButton();
+                    pushButton(newFolderName);
                     count();
 //                            save();
                 }
                 ((RecyclerAdapter) recyclerView.getAdapter()).isSelectedAll = false;
-                binding.allcheck.setChecked(false);
+                binding.allCheck.setChecked(false);
                 ((RecyclerAdapter) recyclerView.getAdapter()).notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -437,20 +428,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.fabMain.setOnClickListener(this);
         binding.fabPin.setOnClickListener(this);
         binding.fabStar.setOnClickListener(this);
-        binding.allcheck.setOnClickListener(this);
+        binding.allCheck.setOnClickListener(this);
 //        binding.search.setOnClickListener(this);
     }
 
-    private void pushButton() {
+    private void pushButton(String newFolderName) {
         db = AppDatabase.getInstance(this);
 
         Drawable img = getBaseContext().getResources().getDrawable(R.drawable.folder);
         img.setBounds(0, 0, 100, 100);
 
-        User user = new User(adapter.getItemCount(),value,0,null,null,null,0,0,0,null, null);
+        User user = new User(adapter.getItemCount(),newFolderName,0,null,null,null,0,0,0,null, null);
         db.userDao().insertAll(user);
         adapter.addItem(user);
-        count ++;
     }
 
     //------------폴더 삭제시 폴더내용 리셋-----------
@@ -458,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void count() {
         folderCount = (TextView) findViewById(R.id.folder_count);
         folderCount.setText("폴더: " + (adapter.getItemCount()));
-        count = adapter.getItemCount();
     }
 
     @Override

@@ -123,14 +123,14 @@ public interface userDao {
     @Query("UPDATE memoTable SET star = 0 WHERE id = :id AND root is null")
     void updateStarOffFolder(int id);
 
-    @Query("UPDATE memoTable SET memoTitle = :memoTitle, content = :content WHERE id = :id AND root = :root")
-    void updateMemo(String memoTitle,String content,int id,String root);
+    @Query("UPDATE memoTable SET memoTitle = :memoTitle, content = :content, editTime = :editTime WHERE id = :id AND root = :root")
+    void updateMemo(String memoTitle,String content,int id,String root, String editTime);
 
     @Query("UPDATE memoTable SET id = :id WHERE folderTitle = :folderTitle")
     void updateId(int id, String folderTitle);
 
-    @Query("UPDATE memoTable SET id = :setid WHERE memoTitle = :memoTitle AND root = :root AND id = :id")
-    void updateMemoId(int setid, String memoTitle, String root, int id);
+    @Query("UPDATE memoTable SET id = :setId WHERE memoTitle = :memoTitle AND root = :root AND id = :id")
+    void updateMemoId(int setId, String memoTitle, String root, int id);
 
     @Query("UPDATE memoTable SET folderTitle = :folderTitle WHERE root is null and id = :id")
     void updateFolderTitle(String folderTitle,int id);

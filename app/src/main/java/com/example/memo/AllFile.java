@@ -67,7 +67,7 @@ public class AllFile extends AppCompatActivity {
         /*TextView folderTitleTextView = findViewById(R.id.title); //폴더 이름 텍스트뷰에 입력
         folderTitleTextView.setText(folderTitle);*/
         //-----------------뒤로가기(꺽쇠괄호)클릭----------------------
-        ImageButton imageButton10 = (ImageButton) findViewById(R.id.imageButton10);
+        ImageButton imageButton10 = (ImageButton) findViewById(R.id.btnBack);
         imageButton10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

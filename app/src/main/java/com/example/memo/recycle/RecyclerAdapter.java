@@ -15,6 +15,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.ContextThemeWrapper;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -125,13 +126,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             return false;
         }
 
-        /*Collections.swap(userData, formPosition, toPosition);
-        notifyItemMoved(formPosition, toPosition);*/
-        /*if (formPin == 0 && toPin == 0) {
-        }if (formPin == 1 && toPin == 1) {
-            Collections.swap(userData, formPosition, toPosition);
-            notifyItemMoved(formPosition, toPosition);
-        }*/
         /*User user = userData.get(formPosition);
         if (formPin == 0 && toPin == 0) {
             userData.remove(formPosition);
@@ -145,6 +139,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             moveSet();
         }*/
 
+
         if (formPin == 0 && toPin == 0) {
             Collections.swap(userData, formPosition, toPosition);
             notifyItemMoved(formPosition, toPosition);
@@ -156,7 +151,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             setId();
             moveSet();
         }
-        notifyItemMoved(formPosition,toPosition);
+
 
         return true;
     }
@@ -205,6 +200,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView folderCount = ((MainActivity) MainActivity.mContext).findViewById(R.id.folder_count);
         folderCount.setText("폴더: " + getItemCount());
         selectCheckBox.removeAll(selectCheckBox);
+        selectCount();
         notifyDataSetChanged();
     }
 
@@ -223,8 +219,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
         selectCheckBox.removeAll(selectCheckBox);
         isSelectedAll = false;
-        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allCheck);
         allCheck.setChecked(false);
+        selectCount();
         notifyDataSetChanged();
     }
 
@@ -271,7 +268,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         setId();
         selectCheckBox.removeAll(selectCheckBox);
         isSelectedAll = false;
-        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+        RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allCheck);
         allCheck.setChecked(false);
         notifyDataSetChanged();
     }
@@ -389,7 +386,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             key = itemView.findViewById(R.id.key);
             drag = itemView.findViewById(R.id.lineUp);
             checkBox = itemView.findViewById(R.id.checkbox);
-            RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allcheck);
+            RadioButton allCheck = ((MainActivity) MainActivity.mContext).findViewById(R.id.allCheck);
 
             /*checkBox.setOnClickListener(v -> {
                 setColor(allCheck, getAdapterPosition());
@@ -444,7 +441,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
 
         private void showMenu(View v) {
-            PopupMenu popup = new PopupMenu(mContext, v);
+            Context wrapper = new ContextThemeWrapper(mContext,R.style.MyPopupMenu);
+            PopupMenu popup = new PopupMenu(wrapper,v);
+//            PopupMenu popup = new PopupMenu(mContext, v);
             popup.setOnMenuItemClickListener(this);// to implement on click event on items of menu
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.list_menu, popup.getMenu());
@@ -485,83 +484,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.newfolder_dialog);
                     showDialogNewFolder(dialog, position);
-                    /*AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setTitle("폴더 이름 변경");
-                    builder.setMessage("변경할 폴더 이름을 입력하세요");
-                    final EditText et = new EditText(mContext);
-                    et.setText(userData.get(position).getFolderTitle());
-                    builder.setView(et);
-                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String editFolderName = et.getText().toString();
-                            if (!editFolderName.equals("")) {
-                                int i = position;
-                                User folderName = new User(i, editFolderName, 0, "", "", null, userData.get(i).star, userData.get(i).password, userData.get(i).pin);
-                                //변경 이름 저장
-                                AppDatabase.getInstance(mContext).userDao().updateFolderTitle(editFolderName, i);
-                                AppDatabase.getInstance(mContext).userDao().updateRoot(editFolderName, userData.get(i).getFolderTitle());
-
-                                userData.set(position, folderName);
-
-                                notifyItemChanged(position);
-                                dialog.dismiss();
-                            } else {
-                                androidx.appcompat.app.AlertDialog.Builder noname = new androidx.appcompat.app.AlertDialog.Builder(mContext);
-                                noname.setTitle("폴더 이름을 입력하세요");
-                                //noname.setMessage("제목없는 폴더는 만들수 없습니다");
-                                noname.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
-                                noname.show();
-                            }
-                        }
-                    }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-
-                    et.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (s.length() == 0) {
-                                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                            } else {
-                                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                            }
-                        }
-
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            List<String> folderTitle = AppDatabase.getInstance(mContext).userDao().getAllFolderTitle();
-                            for (int i = 0; i < folderTitle.size(); i++) {
-                                if (s.toString().equals("")) {
-                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                    break;
-                                }
-                                if (folderTitle.get(i).equals(s.toString())) {
-                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                    break;
-                                } else {
-                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                }
-                            }
-                        }
-                    });*/
                     break;
             }
             return false;

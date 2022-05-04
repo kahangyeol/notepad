@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton10"
+            android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -139,7 +139,7 @@
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/allcheck"
+                    android:id="@+id/allCheck"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
